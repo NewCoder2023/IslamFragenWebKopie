@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   leftElements: {
     height: "100%",
     width: "50%",
-    backgroundColor: "green",
+    backgroundColor: "transparent",
     alignItems: "center",
   
   },
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "50%",
     alignItems: "center",
-    backgroundColor: "blue",
+    backgroundColor: "transparent",
   },
 
   element: {
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     maxWidth: 350, 
     minWidth: 200, 
     height: "100%",
-    minHeight: 100,
+    minHeight: 130,
     margin: 15,
     textAlign: "center",
     borderWidth: 2,
