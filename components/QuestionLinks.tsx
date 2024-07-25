@@ -7,6 +7,7 @@ import Colors from "constants/Colors";
 import { Image } from "expo-image";
 import { useColorScheme } from "react-native";
 import { coustomTheme } from "./coustomTheme";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function QuestionLinks() {
   const colorScheme = useColorScheme();
@@ -49,7 +50,7 @@ export default function QuestionLinks() {
   ];
 
   return (
-    <View style={[styles.container]}>
+    <ScrollView contentContainerStyle={[styles.container]}>
       <View style={styles.leftElements}>
         {categoriesLeft.map((category, index) => (
           <View
@@ -134,7 +135,7 @@ export default function QuestionLinks() {
           </View>
         ))}
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     width: "70%",
     maxWidth: 350, 
-    minWidth: 200, 
+    minWidth: 150, 
     height: "100%",
     minHeight: 130,
     margin: 15,

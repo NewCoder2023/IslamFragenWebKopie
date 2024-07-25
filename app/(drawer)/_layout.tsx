@@ -1,6 +1,22 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Drawer } from "expo-router/drawer";
-import { router } from "expo-router";
+import { Pressable } from "react-native";
+import { Feather } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+
+
+// <Feather name="sun" size={24} color="yellow" />
+// <FontAwesome name="moon-o" size={24} color="black" />
+
+
+const ToggleColorMode = () => {
+  return (
+    <Pressable onPress={() => alert('Button pressed!')} style={{ marginRight: 20 }}>
+      <Feather name="sun" size={24} color="#fbc531" />
+      <FontAwesome name="moon-o" size={24} color="black" />
+    </Pressable>
+  );
+};
 
 export default function Layout() {
   return (
@@ -11,6 +27,7 @@ export default function Layout() {
           options={{
             drawerLabel: "Home",
             title: "Islam-Fragen",
+            headerRight: () => <ToggleColorMode />,
           }}
         />
         <Drawer.Screen
