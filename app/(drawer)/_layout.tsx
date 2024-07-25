@@ -4,12 +4,13 @@ import { Drawer } from "expo-router/drawer";
 export default function Layout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer>
+      <Drawer initialRouteName='(elements)/index'>
         <Drawer.Screen
-          name='index' // This is the name of the page and must match the url from root
+          name='(elements)' // This is the name of the page and must match the url from root
           options={{
             drawerLabel: "Home",
             title: "Islam-Fragen",
+            
           }}
         />
         <Drawer.Screen
