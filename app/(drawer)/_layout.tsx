@@ -22,17 +22,32 @@ export default function Layout() {
           }}
         />
         <Drawer.Screen
-          name='impressum' // This is the name of the page and must match the url from root
+          name='news' // This is the name of the page and must match the url from root
           options={{
-            drawerLabel: "Impressum",
-            title: "Impressum",
+            drawerLabel: "Neuigkeiten",
+            title: "Neuigkeiten",
           }}
         />
+        <Drawer.Screen
+          name='search' // This is the name of the page and must match the url from root
+          options={{
+            drawerLabel: "Suche",
+            title: "Suche",
+          }}
+        />
+
         <Drawer.Screen
           name='ueber' // This is the name of the page and must match the url from root
           options={{
             drawerLabel: "Über",
             title: "Über",
+          }}
+        />
+        <Drawer.Screen
+          name='impressum' // This is the name of the page and must match the url from root
+          options={{
+            drawerLabel: "Impressum",
+            title: "Impressum",
           }}
         />
       </Drawer>
