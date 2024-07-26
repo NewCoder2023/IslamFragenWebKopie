@@ -1,4 +1,5 @@
 import Colors from "constants/Colors";
+import { useColorScheme } from "hooks/useColorScheme.web";
 
 export const lightTheme = {
   containerDefault: {
@@ -206,8 +207,9 @@ export const darkTheme = {
   }
 };
 
-type ColorScheme = "light" | "dark" | undefined | null;
 
-export const coustomTheme = (colorScheme: ColorScheme) => {
+const colorScheme = useColorScheme();
+
+export const coustomTheme = () => {
   return colorScheme === "light" ? lightTheme : darkTheme;
 };

@@ -3,7 +3,7 @@ import { Pressable, StyleSheet } from "react-native";
 import { View, Text } from "components/Themed";
 import QuestionLinks from "components/QuestionLinks";
 import { coustomTheme } from "components/coustomTheme";
-import { useColorScheme } from "react-native";
+import { useColorScheme } from "hooks/useColorScheme.web";
 import { Image } from "expo-image";
 import Colors from "constants/Colors";
 import { ImageBackground } from "react-native";
@@ -15,7 +15,7 @@ import { Alert } from "react-native";
 
 export default function index() {
   const colorscheme = useColorScheme();
-  const themeStyles = coustomTheme(colorscheme);
+  const themeStyles = coustomTheme();
   const { fontSize, setLineHeight, setFontSize } = useSetFontSize();
 
   

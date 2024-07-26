@@ -11,7 +11,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 export default function QuestionLinks() {
   const colorScheme = useColorScheme();
-  const themeStyles = coustomTheme(colorScheme);
+  const themeStyles = coustomTheme();
 
   const categoriesLeft = [
     {

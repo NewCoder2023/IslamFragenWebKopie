@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Appearance } from "react-native";
+import { useColorScheme } from "hooks/useColorScheme.web";
 
 export const useChangeColorMode = () => {
-  const colorScheme = Appearance.getColorScheme();
+  const colorScheme = useColorScheme();
   const [isDarkMode, setIsDarkMode] = useState(colorScheme === "dark");
 
   useEffect(() => {

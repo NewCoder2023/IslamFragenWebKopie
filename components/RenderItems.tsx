@@ -35,7 +35,7 @@ export default function RenderItems({
   };
 
   const colorScheme = useColorScheme();
-  const themeStyles = coustomTheme(colorScheme);
+  const themeStyles = coustomTheme();
   const appColor = Appearance.getColorScheme();
   console.log(items);
 

@@ -6,7 +6,7 @@
 import { Text as DefaultText, View as DefaultView } from "react-native";
 import { SafeAreaView as DefaultSafeAreaView } from "react-native-safe-area-context";
 import Colors from "constants/Colors";
-import { useColorScheme } from "./useColorScheme";
+import { useColorScheme } from "hooks/useColorScheme.web"
 import { NativeSafeAreaViewProps } from "react-native-safe-area-context";
 
 type ThemeProps = {
