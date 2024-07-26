@@ -346,7 +346,7 @@ export default function askQuestion() {
           <View style={styles.linkContainer}>
             <Text style={styles.linkText}>Ich habe die</Text>
             <Link
-              href='rulesModal/modal'
+              href='rules'
               style={[styles.link, themeStyles.link]}
             >
               Richtlinien
