@@ -11,7 +11,6 @@ import { useEffect } from "react";
 import { useColorScheme } from "components/useColorScheme";
 import { Header } from "react-native/Libraries/NewAppScreen";
 
-
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -64,15 +63,9 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen
-          name='index'
-          options={{ headerShown: false, headerTitle: "" }}
-        />
-
-        <Stack.Screen
           name='(renderCategory)/[renderCategory]'
           options={{
             headerShown: false,
-           
           }}
         />
 
@@ -80,7 +73,6 @@ function RootLayoutNav() {
           name='(renderNestedCategories)/[renderNestedCategories]'
           options={{
             headerShown: false,
-            
           }}
         />
       </Stack>
