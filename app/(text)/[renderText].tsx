@@ -591,7 +591,7 @@ const styles = StyleSheet.create({
   marjaText: {
     fontSize: 20,
     fontWeight: "bold",
-    marginRight: 30,
+    marginRight: 20,
   },
   bookmark: {
     paddingTop: 7,
