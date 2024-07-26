@@ -216,7 +216,11 @@ export default function RenderText() {
           <Text style={styles.errorText}>{fetchError}</Text>
         </View>
       ) : displaySingleAnswer ? (
-        <ScrollView style={styles.answerContainer}>
+        <ScrollView
+          style={styles.answersScrollViewStyles}
+          contentContainerStyle={styles.answersScrollViewContent}
+        >
+          <View style={styles.innerContainerScrollView}>
           <View
             style={[styles.questionContainer, themeStyles.containerContrast]}
           >
@@ -229,106 +233,10 @@ export default function RenderText() {
               {displayQuestion}
             </Text>
           </View>
-          <View style={[styles.singleAnswers, themeStyles.containerContrast]}>
-            <View style={styles.copyContainerSingle}>
-              {isCopiedSingle ? (
-                <View style={styles.copyDoneContainer}>
-                  <MaterialIcons
-                    name='done'
-                    size={24}
-                    color={colorScheme == "dark" ? "white" : "black"}
-                  />
-                  <Text style={styles.copyDoneText}>Text Kopiert!</Text>
-                </View>
-              ) : (
-                <Pressable
-                  onPress={() => copySingleAnswer(displaySingleAnswer)}
-                >
-                  <AntDesign
-                    name='copy1'
-                    size={24}
-                    color={colorScheme == "dark" ? "white" : "black"}
-                  />
-                </Pressable>
-              )}
-            </View>
-            <Markdown
-              style={{
-                body: {
-                  ...themeStyles.markdownText,
-                  fontSize: fontSize,
-                  lineHeight: lineHeight,
-                  fontFamily: Platform.OS === "ios" ? "Helvetica" : "Roboto",
-                },
-                heading1: {
-                  fontSize: fontSize + 5,
-                },
-                heading2: {
-                  ...themeStyles.markdownText,
-                  fontSize: fontSize + 10,
-                  textAlign: "center",
-                },
-                heading3: {
-                  ...themeStyles.markdownText,
-                  fontSize: fontSize + 10,
-                  fontWeight: "bold",
-                },
-                heading4: {
-                  ...themeStyles.markdownText,
-                  fontSize: fontSize + 10,
-                  textAlign: "center",
-                  fontWeight: "bold",
-                },
-                heading5: {
-                  ...themeStyles.markdownText,
-                  fontSize: fontSize + 10,
-                },
-                heading6: {
-                  ...themeStyles.markdownText,
-                  fontSize: fontSize,
-                  textAlign: "center",
-                },
-              }}
-            >
-              {displaySingleAnswer}
-            </Markdown>
-          </View>
-        </ScrollView>
-      ) : (
-        <ScrollView style={styles.answerContainer}>
-          <View
-            style={[styles.questionContainer, themeStyles.containerContrast]}
-          >
-            <Text
-              style={[
-                styles.questionText,
-                { lineHeight: lineHeight, fontSize: fontSize },
-              ]}
-            >
-              {displayQuestion}
-            </Text>
-          </View>
-          <View style={styles.marjaChoiceContainer}>
-            {marjaOptions.map((option) => (
-              <View key={option.value} style={styles.marjaChoice}>
-                <View style={styles.checkboxContainer}>
-                  <Checkbox
-                    style={styles.marjaCheckbox}
-                    value={marja.includes(option.value)}
-                    onValueChange={() => handleCheckboxChange(option.value)}
-                  />
-                </View>
-                <Text style={styles.marjaLable}>{option.label}</Text>
-              </View>
-            ))}
-          </View>
-          {filteredAnswers.map((answer, index) => (
-            <View
-              key={index}
-              style={[styles.answers, themeStyles.containerContrast]}
-            >
-              <View style={styles.copyContainer}>
-                {isCopiedMultiple[answer.marja] ? (
+          <View style={styles.answersContainer}>
+            <View style={[styles.singleAnswers, themeStyles.containerContrast]}>
+              <View style={styles.copyContainerSingle}>
+                {isCopiedSingle ? (
                   <View style={styles.copyDoneContainer}>
                     <MaterialIcons
                       name='done'
@@ -339,9 +247,7 @@ export default function RenderText() {
                   </View>
                 ) : (
                   <Pressable
-                    onPress={() =>
-                      copyMultipleAnswers(answer.marja, answer.answer)
-                    }
+                    onPress={() => copySingleAnswer(displaySingleAnswer)}
                   >
                     <AntDesign
                       name='copy1'
@@ -351,33 +257,10 @@ export default function RenderText() {
                   </Pressable>
                 )}
               </View>
-              <View
-                style={[styles.headerContainer, themeStyles.containerContrast]}
-              >
-                <View style={styles.headerImage}>
-                  <Image
-                    source={images[answer.marja]}
-                    style={styles.image}
-                    contentFit='cover'
-                  />
-                </View>
-                <View
-                  style={[styles.headerText, themeStyles.containerContrast]}
-                >
-                  <Text style={styles.marjaText}>
-                    {
-                      marjaOptions.find(
-                        (option) => option.value === answer.marja
-                      )?.label
-                    }
-                  </Text>
-                </View>
-              </View>
               <Markdown
                 style={{
                   body: {
                     ...themeStyles.markdownText,
-
                     fontSize: fontSize,
                     lineHeight: lineHeight,
                     fontFamily: Platform.OS === "ios" ? "Helvetica" : "Roboto",
@@ -412,10 +295,145 @@ export default function RenderText() {
                   },
                 }}
               >
-                {answer.answer}
+                {displaySingleAnswer}
               </Markdown>
             </View>
-          ))}
+          </View>
+          </View>
+        </ScrollView>
+      ) : (
+        <ScrollView
+          style={styles.answersScrollViewStyles}
+          contentContainerStyle={styles.answersScrollViewContent}
+        >
+           <View style={styles.innerContainerScrollView}>
+          <View
+            style={[styles.questionContainer, themeStyles.containerContrast]}
+          >
+            <Text
+              style={[
+                styles.questionText,
+                { lineHeight: lineHeight, fontSize: fontSize },
+              ]}
+            >
+              {displayQuestion}
+            </Text>
+          </View>
+          <View style={styles.marjaChoiceContainer}>
+            {marjaOptions.map((option) => (
+              <View key={option.value} style={styles.marjaChoice}>
+                <View style={styles.checkboxContainer}>
+                  <Checkbox
+                    style={styles.marjaCheckbox}
+                    value={marja.includes(option.value)}
+                    onValueChange={() => handleCheckboxChange(option.value)}
+                  />
+                </View>
+                <Text style={styles.marjaLable}>{option.label}</Text>
+              </View>
+            ))}
+          </View>
+          <View style={styles.answersContainer}>
+            {filteredAnswers.map((answer, index) => (
+              <View
+                key={index}
+                style={[styles.answers, themeStyles.containerContrast]}
+              >
+                <View style={styles.copyContainer}>
+                  {isCopiedMultiple[answer.marja] ? (
+                    <View style={styles.copyDoneContainer}>
+                      <MaterialIcons
+                        name='done'
+                        size={24}
+                        color={colorScheme == "dark" ? "white" : "black"}
+                      />
+                      <Text style={styles.copyDoneText}>Text Kopiert!</Text>
+                    </View>
+                  ) : (
+                    <Pressable
+                      onPress={() =>
+                        copyMultipleAnswers(answer.marja, answer.answer)
+                      }
+                    >
+                      <AntDesign
+                        name='copy1'
+                        size={24}
+                        color={colorScheme == "dark" ? "white" : "black"}
+                      />
+                    </Pressable>
+                  )}
+                </View>
+                <View
+                  style={[
+                    styles.headerContainer,
+                    themeStyles.containerContrast,
+                  ]}
+                >
+                  <View style={styles.headerImage}>
+                    <Image
+                      source={images[answer.marja]}
+                      style={styles.image}
+                      contentFit='cover'
+                    />
+                  </View>
+                  <View
+                    style={[styles.headerText, themeStyles.containerContrast]}
+                  >
+                    <Text style={styles.marjaText}>
+                      {
+                        marjaOptions.find(
+                          (option) => option.value === answer.marja
+                        )?.label
+                      }
+                    </Text>
+                  </View>
+                </View>
+                <Markdown
+                  style={{
+                    body: {
+                      ...themeStyles.markdownText,
+
+                      fontSize: fontSize,
+                      lineHeight: lineHeight,
+                      fontFamily:
+                        Platform.OS === "ios" ? "Helvetica" : "Roboto",
+                    },
+                    heading1: {
+                      fontSize: fontSize + 5,
+                    },
+                    heading2: {
+                      ...themeStyles.markdownText,
+                      fontSize: fontSize + 10,
+                      textAlign: "center",
+                    },
+                    heading3: {
+                      ...themeStyles.markdownText,
+                      fontSize: fontSize + 10,
+                      fontWeight: "bold",
+                    },
+                    heading4: {
+                      ...themeStyles.markdownText,
+                      fontSize: fontSize + 10,
+                      textAlign: "center",
+                      fontWeight: "bold",
+                    },
+                    heading5: {
+                      ...themeStyles.markdownText,
+                      fontSize: fontSize + 10,
+                    },
+                    heading6: {
+                      ...themeStyles.markdownText,
+                      fontSize: fontSize,
+                      textAlign: "center",
+                    },
+                  }}
+                >
+                  {answer.answer}
+                </Markdown>
+              </View>
+            ))}
+          </View>
+          </View>
         </ScrollView>
       )}
     </View>
@@ -431,7 +449,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 15,
     backgroundColor: "transparent",
-    marginLeft: 5,
+    paddingRight: 15,
   },
   modalContainer: {
     flex: 1,
@@ -449,13 +467,24 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 30,
   },
-  answerContainer: {
+  answersScrollViewStyles: {
     flex: 1,
     marginTop: 10,
     marginBottom: 10,
   },
+
+  answersScrollViewContent: {
+    flexDirection: "column",
+  },
+
+  innerContainerScrollView: {
+    flexDirection: "column",
+    width: "95%",
+    maxWidth: 700,
+    alignItems: "center"
+  },
+
   questionContainer: {
-    margin: 10,
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
@@ -468,17 +497,23 @@ const styles = StyleSheet.create({
   singleAnswers: {
     flex: 1,
     marginBottom: 20,
-    marginHorizontal: 15,
+    width: "95%",
     paddingHorizontal: 20,
     paddingBottom: 10,
     paddingTop: 5,
     borderWidth: 1,
     borderRadius: 10,
   },
+  answersContainer: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+  },
   answers: {
     flex: 1,
     marginBottom: 20,
-    marginHorizontal: 15,
+    width: "95%",
+    maxWidth: 700,
     padding: 20,
     borderWidth: 1,
     borderRadius: 10,
@@ -515,14 +550,14 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     paddingBottom: 10,
     borderBottomWidth: 2,
   },
   marjaChoiceContainer: {
     flexDirection: "row",
     margin: 20,
-    justifyContent: "space-between",
+    justifyContent: "space-around",
   },
   marjaChoice: {
     flexDirection: "row",
@@ -540,16 +575,20 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     fontWeight: "bold",
   },
-  headerImage: {},
+  headerImage: {
+    backgroundColor: "transparent",
+  },
   image: {
-    width: 70,
-    height: 70,
+    width: 100,
+    height: 100,
+    marginLeft: 10,
     borderRadius: 10,
   },
   headerText: {},
   marjaText: {
     fontSize: 20,
     fontWeight: "bold",
+    marginRight: 30,
   },
   bookmark: {
     paddingTop: 7,
