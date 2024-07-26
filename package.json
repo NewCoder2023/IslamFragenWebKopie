@@ -6,7 +6,7 @@
   "scripts": {
     "start": "expo start",
     "web-build": "npx expo export",
-    "deploy": "npm run web-build && gh-pages -d web-build",
+    "deploy": "npm run web-build && gh-pages -d dist",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
