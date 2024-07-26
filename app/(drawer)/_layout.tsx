@@ -1,23 +1,23 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Drawer } from "expo-router/drawer";
 import { Pressable } from "react-native";
-import { Feather } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
-
-
-// <Feather name="sun" size={24} color="yellow" />
-// <FontAwesome name="moon-o" size={24} color="black" />
-
+import { Feather } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import { useChangeColorMode } from "components/useColorMode";
 
 const ToggleColorMode = () => {
+  const [isDarkMode, toggleColorScheme] = useChangeColorMode();
+
   return (
-    <Pressable onPress={() => alert('Button pressed!')} style={{ marginRight: 20 }}>
-      <Feather name="sun" size={24} color="#fbc531" />
-      <FontAwesome name="moon-o" size={24} color="black" />
+    <Pressable onPress={toggleColorScheme} style={{ marginRight: 20 }}>
+      {isDarkMode ? (
+        <Feather name='sun' size={24} color='#fbc531' />
+      ) : (
+        <FontAwesome name='moon-o' size={24} color='black' />
+      )}
     </Pressable>
   );
 };
-
 export default function Layout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -43,6 +43,23 @@ export default function Layout() {
           options={{
             drawerLabel: "Neuigkeiten",
             title: "Neuigkeiten",
+            headerRight: () => <ToggleColorMode />,
+          }}
+        />
+        <Drawer.Screen
+          name='askQuestion' // This is the name of the page and must match the url from root
+          options={{
+            drawerLabel: "Frage stellen",
+            title: "Eine Frage stellen",
+            headerRight: () => <ToggleColorMode />,
+          }}
+        />
+        <Drawer.Screen
+          name='favorites' // This is the name of the page and must match the url from root
+          options={{
+            drawerLabel: "Favoriten",
+            title: "Favoriten",
+            headerRight: () => <ToggleColorMode />,
           }}
         />
         <Drawer.Screen
@@ -50,6 +67,7 @@ export default function Layout() {
           options={{
             drawerLabel: "Suche",
             title: "Suche",
+            headerRight: () => <ToggleColorMode />,
           }}
         />
 
@@ -58,6 +76,7 @@ export default function Layout() {
           options={{
             drawerLabel: "Über",
             title: "Über",
+            headerRight: () => <ToggleColorMode />,
           }}
         />
         <Drawer.Screen
@@ -65,6 +84,7 @@ export default function Layout() {
           options={{
             drawerLabel: "Impressum",
             title: "Impressum",
+            headerRight: () => <ToggleColorMode />,
           }}
         />
       </Drawer>

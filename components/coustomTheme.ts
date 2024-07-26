@@ -102,10 +102,6 @@ export const lightTheme = {
 
 
 
-
-
-
-
 export const darkTheme = {
   containerDefault: {
     backgroundColor: Colors.dark.background,
