@@ -1,5 +1,6 @@
 import Colors from "constants/Colors";
-import { useColorScheme } from "hooks/useColorScheme.web";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const lightTheme = {
   containerDefault: {
@@ -85,7 +86,6 @@ export const lightTheme = {
     color: Colors.light.inverseQuestionText,
   },
   inverseQuestionBackground: {
-    
     backgroundColor: Colors.light.contrast,
   },
   inverseTextIndex: {
@@ -95,13 +95,10 @@ export const lightTheme = {
     color: Colors.light.black,
     backgroundColor: Colors.light.contrast,
   },
-  pickerContainerBorder:
-  {
+  pickerContainerBorder: {
     borderColor: Colors.light.pickerContainerBorder,
-  }
+  },
 };
-
-
 
 export const darkTheme = {
   containerDefault: {
@@ -201,15 +198,34 @@ export const darkTheme = {
   inverseTextIndex: {
     color: Colors.dark.inverseTextIndex,
   },
-  pickerContainerBorder:
-  {
+  pickerContainerBorder: {
     borderColor: Colors.dark.pickerContainerBorder,
+  },
+};
+
+// Function to get the current theme
+export const getCustomTheme = async () => {
+  try {
+    const storedIsDarkMode = await AsyncStorage.getItem('isDarkMode');
+    return storedIsDarkMode === 'true' ? darkTheme : lightTheme;
+  } catch (error) {
+    console.error('Failed to load theme from AsyncStorage:', error);
+    return lightTheme; // Default to light theme if there's an error
   }
 };
 
-
-const colorScheme = useColorScheme();
-
+// React hook to use the custom theme
 export const coustomTheme = () => {
-  return colorScheme === "light" ? lightTheme : darkTheme;
+  const [theme, setTheme] = useState(lightTheme);
+
+  useEffect(() => {
+    const loadTheme = async () => {
+      const currentTheme = await getCustomTheme();
+      setTheme(currentTheme);
+    };
+
+    loadTheme();
+  }, []);
+
+  return theme;
 };
