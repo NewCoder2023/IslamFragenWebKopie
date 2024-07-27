@@ -501,12 +501,14 @@ const styles = StyleSheet.create({
   singleAnswers: {
     height: "auto",
     width: "100%",
+    marginTop: 20,
     marginBottom: 20,
     paddingHorizontal: 20,
     paddingBottom: 10,
     paddingTop: 5,
     borderWidth: 1,
     borderRadius: 10,
+    
   },
   answersContainer: {
     flex: 1,
