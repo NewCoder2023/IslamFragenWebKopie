@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "flex-start",
     width: "50%",
+    minWidth: 350,
     maxWidth: 400,
     marginTop: 20,
     borderWidth: 2,

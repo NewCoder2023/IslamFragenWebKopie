@@ -23,6 +23,7 @@ export default function Layout() {
             drawerItemStyle: { height: 0 }, // Hide the item by setting its height to 0
           }}
         />
+        
         <Drawer.Screen
           name='news' // This is the name of the page and must match the url from root
           options={{

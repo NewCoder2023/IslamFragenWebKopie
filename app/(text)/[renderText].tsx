@@ -1,3 +1,4 @@
+// Test
 import { View, Text } from "components/Themed";
 import { StyleSheet, Pressable, Platform, ScrollView } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
@@ -33,7 +34,7 @@ export default function RenderText() {
     table || "",
     title || ""
   );
-
+ 
   const key = `text-${id}-${table}`;
   const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
   const CONTENT_OFFSET_THRESHOLD = 300;
@@ -620,3 +621,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+
