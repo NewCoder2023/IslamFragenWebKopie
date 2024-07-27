@@ -5,7 +5,7 @@ import {
   Pressable,
 } from "react-native";
 import { View, Text, SafeAreaView } from "components/Themed";
-import { TextInput } from "react-native";
+import { TextInput, TextInputProps } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useColorScheme } from "react-native";
 import { useState } from "react";
@@ -18,14 +18,8 @@ export default function TabOneScreen() {
   const [search, setSearch] = useState("");
 
   const colorScheme = useColorScheme();
-  const themeStyles = coustomTheme(colorScheme);
+  const themeStyles = coustomTheme();
   const searchInputRef = useRef(null);
-
-  useEffect(() => {
-    if (searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
-  }, []);
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "right", "left"]}>
@@ -38,7 +32,13 @@ export default function TabOneScreen() {
         />
         <Text style={[styles.border, themeStyles.searchBorderDash]}>|</Text>
         <TextInput
-          style={[styles.searchField, themeStyles.inverseTextInput]}
+          style={[
+            styles.searchField,
+            themeStyles.inverseTextInput,
+            {
+              outline: "none",
+            } as TextInputProps["style"],
+          ]}
           placeholder='Suche'
           keyboardType='default'
           editable
@@ -46,6 +46,7 @@ export default function TabOneScreen() {
           ref={searchInputRef}
           onChangeText={setSearch}
         />
+
         {search && (
           <Pressable
             style={styles.deleteIconContainer}
@@ -67,15 +68,17 @@ export default function TabOneScreen() {
 }
 
 const styles = StyleSheet.create({
-  
   container: {
     flex: 1,
   },
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "flex-start",
+    width: "50%",
+    maxWidth: 400,
     marginTop: 20,
-    marginHorizontal: 15,
     borderWidth: 2,
     borderRadius: 30,
   },
@@ -86,8 +89,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   deleteIcon: {
-    paddingRight: 11,
-    paddingVertical: 10,
+    paddingVertical: 8,
+    paddingRight: 10
   },
   border: {
     fontSize: 25,
@@ -97,10 +100,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   searchField: {
-    width: "80%",
+    width:"100%",
+    borderRadius: 30,
     paddingRight: 10,
     paddingLeft: 5,
     paddingVertical: 12,
+    borderColor: "transparent",
   },
 
   renderSearchContainer: {

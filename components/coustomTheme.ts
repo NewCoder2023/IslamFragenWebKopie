@@ -1,6 +1,5 @@
 import Colors from "constants/Colors";
-import { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useColorScheme } from "hooks/useColorScheme.web";
 
 export const lightTheme = {
   containerDefault: {
@@ -203,29 +202,8 @@ export const darkTheme = {
   },
 };
 
-// Function to get the current theme
-export const getCustomTheme = async () => {
-  try {
-    const storedIsDarkMode = await AsyncStorage.getItem('isDarkMode');
-    return storedIsDarkMode === 'true' ? darkTheme : lightTheme;
-  } catch (error) {
-    console.error('Failed to load theme from AsyncStorage:', error);
-    return lightTheme; // Default to light theme if there's an error
-  }
-};
+const colorScheme = useColorScheme();
 
-// React hook to use the custom theme
 export const coustomTheme = () => {
-  const [theme, setTheme] = useState(lightTheme);
-
-  useEffect(() => {
-    const loadTheme = async () => {
-      const currentTheme = await getCustomTheme();
-      setTheme(currentTheme);
-    };
-
-    loadTheme();
-  }, []);
-
-  return theme;
+  return colorScheme === "light" ? lightTheme : darkTheme;
 };

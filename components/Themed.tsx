@@ -3,11 +3,10 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import { useState, useEffect } from "react";
 import { Text as DefaultText, View as DefaultView } from "react-native";
 import { SafeAreaView as DefaultSafeAreaView } from "react-native-safe-area-context";
 import Colors from "constants/Colors";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useColorScheme } from "hooks/useColorScheme.web";
 import { NativeSafeAreaViewProps } from "react-native-safe-area-context";
 
 type ThemeProps = {
@@ -19,30 +18,11 @@ export type TextProps = ThemeProps & DefaultText["props"];
 export type ViewProps = ThemeProps & DefaultView["props"];
 export type SafeAreaViewProps = ThemeProps & NativeSafeAreaViewProps;
 
-const getThemeFromAsyncStorage = async () => {
-  try {
-    const storedTheme = await AsyncStorage.getItem('isDarkMode');
-    return storedTheme === 'true' ? 'dark' : 'light';
-  } catch (error) {
-    console.error('Failed to load theme from AsyncStorage:', error);
-    return 'light'; // Default to light theme if there's an error
-  }
-};
-
 export function useThemeColor(
   props: { light?: string; dark?: string },
   colorName: keyof typeof Colors.light & keyof typeof Colors.dark
 ) {
-  const [theme, setTheme] = useState('light');
-
-  useEffect(() => {
-    const loadTheme = async () => {
-      const storedTheme = await getThemeFromAsyncStorage();
-      setTheme(storedTheme);
-    };
-    loadTheme();
-  }, []);
-
+  const theme = useColorScheme() ?? "light";
   const colorFromProps = props[theme];
 
   if (colorFromProps) {
@@ -63,6 +43,7 @@ export function View(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const backgroundColor = useThemeColor(
     { light: lightColor, dark: darkColor },
+    
     "background"
   );
 

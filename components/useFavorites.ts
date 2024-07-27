@@ -30,11 +30,7 @@ export default function useFavorites() {
         (item) => item.table == table && item.id == id && item.isFavorite
       )
     ) {
-      Toast.show({
-        type: "error",
-        text1: "Von Favoriten entfernt!",
-      });
-
+      alert("Von Favoriten entfernt!");
       const newFavorites = favorites.map((item) =>
         item.table == table && item.id == id
           ? { ...item, isFavorite: false }
@@ -43,10 +39,7 @@ export default function useFavorites() {
       setFavorites(newFavorites);
       await storeFavorites(newFavorites, change);
     } else {
-      Toast.show({
-        type: "success",
-        text1: "Zu Favoriten hinzugefügt!",
-      });
+      alert("Zu Favoriten hinzugefügt!");
 
       const newFavorites = [
         ...favorites,

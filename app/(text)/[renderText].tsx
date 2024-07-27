@@ -54,7 +54,7 @@ export default function RenderText() {
   const displayQuestion = item?.question;
   const displaySingleAnswer = item?.answer;
   const colorScheme = useColorScheme();
-  const themeStyles = coustomTheme(colorScheme);
+  const themeStyles = coustomTheme();
   const [isCopiedMultiple, setIsCopiedMultiple] = useState({
     "Sayid al-Khamenei": false,
     "Sayid as-Sistani": false,

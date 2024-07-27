@@ -191,19 +191,13 @@ export default function askQuestion() {
           );
           if (success) {
             setShowCaptcha(false); // Hide captcha on success
-            Toast.show({
-              type: "success",
-              text1: "Frage erfolgreich gesendet!",
-              text2: "Du erhälst die Antwort in wenigen Tagen als Email",
-            });
+            alert(
+              "Frage erfolgreich gesendet! Du erhälst die Antwort in wenigen Tagen als Email"
+            );
             router.navigate("(elements)");
             setFormState(initialFormState); // Reset form state on success
           } else {
-            Toast.show({
-              type: "error",
-              text1: "Fehler",
-              text2: "Versuch es später erneut",
-            });
+            alert("Fehler! Versuch es später erneut");
           }
         }
       }
@@ -345,10 +339,7 @@ export default function askQuestion() {
           />
           <View style={styles.linkContainer}>
             <Text style={styles.linkText}>Ich habe die</Text>
-            <Link
-              href='rules'
-              style={[styles.link, themeStyles.link]}
-            >
+            <Link href='rules' style={[styles.link, themeStyles.link]}>
               Richtlinien
             </Link>
             <Text style={styles.linkText}>gelesen und akzeptiert.</Text>
@@ -370,7 +361,7 @@ export default function askQuestion() {
       {showCaptcha && (
         <ConfirmHcaptcha
           ref={captchaRef}
-          size='invisible'
+          size='compact'
           siteKey={siteKey}
           baseUrl={baseUrl}
           onMessage={onMessage}

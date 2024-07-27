@@ -1,41 +1,8 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Drawer } from "expo-router/drawer";
-import { Pressable } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { FontAwesome } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-
-const ToggleColorMode: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    // Load initial state from AsyncStorage
-    const loadColorScheme = async () => {
-      const storedIsDarkMode = await AsyncStorage.getItem("isDarkMode");
-      if (storedIsDarkMode !== null) {
-        setIsDarkMode(storedIsDarkMode === "true");
-      }
-    };
-    loadColorScheme();
-  }, []);
-
-  const handleToggle = async () => {
-    const newIsDarkMode = !isDarkMode;
-    setIsDarkMode(newIsDarkMode);
-    await AsyncStorage.setItem("isDarkMode", newIsDarkMode.toString());
-  };
-
-  return (
-    <Pressable onPress={handleToggle} style={{ marginRight: 20 }}>
-      {isDarkMode ? (
-        <Feather name='sun' size={24} color='#fbc531' />
-      ) : (
-        <FontAwesome name='moon-o' size={24} color='black' />
-      )}
-    </Pressable>
-  );
-};
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Pressable } from "react-native";
 
 export default function Layout() {
   return (
@@ -46,7 +13,6 @@ export default function Layout() {
           options={{
             drawerLabel: "Home",
             title: "Islam-Fragen",
-            headerRight: () => <ToggleColorMode />,
           }}
         />
         <Drawer.Screen
@@ -62,7 +28,6 @@ export default function Layout() {
           options={{
             drawerLabel: "Neuigkeiten",
             title: "Neuigkeiten",
-            headerRight: () => <ToggleColorMode />,
           }}
         />
         <Drawer.Screen
@@ -70,7 +35,6 @@ export default function Layout() {
           options={{
             drawerLabel: "Frage stellen",
             title: "Eine Frage stellen",
-            headerRight: () => <ToggleColorMode />,
           }}
         />
         <Drawer.Screen
@@ -78,7 +42,6 @@ export default function Layout() {
           options={{
             drawerLabel: "Favoriten",
             title: "Favoriten",
-            headerRight: () => <ToggleColorMode />,
           }}
         />
         <Drawer.Screen
@@ -86,7 +49,6 @@ export default function Layout() {
           options={{
             drawerLabel: "Suche",
             title: "Suche",
-            headerRight: () => <ToggleColorMode />,
           }}
         />
 
@@ -95,7 +57,6 @@ export default function Layout() {
           options={{
             drawerLabel: "Über",
             title: "Über",
-            headerRight: () => <ToggleColorMode />,
           }}
         />
         <Drawer.Screen
@@ -103,7 +64,6 @@ export default function Layout() {
           options={{
             drawerLabel: "Impressum",
             title: "Impressum",
-            headerRight: () => <ToggleColorMode />,
           }}
         />
       </Drawer>
