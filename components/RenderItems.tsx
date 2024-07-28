@@ -41,6 +41,7 @@ export default function RenderItems({
 
   return (
     <View style={styles.container}>
+      <>
       {fetchError && (
         <View style={styles.renderError}>
           <Text style={[styles.errorText, themeStyles.error]}>
@@ -55,9 +56,12 @@ export default function RenderItems({
             color={colorScheme == "light" ? "black" : "white"}
           />
           <Text style={styles.loadingIndicatorText}>
-            Fragen werden geladen. Das kann je nach Internetverbindung, einen kleinen Augenblick dauern!
+            Fragen werden geladen. Das kann je nach Internetverbindung, einen
+            kleinen Augenblick dauern!
           </Text>
-          <Text style={styles.loadingIndicatorText}>Allahumma salli ala Muhammad wa aali Muhammad</Text>
+          <Text style={styles.loadingIndicatorText}>
+            Allahumma salli ala Muhammad wa aali Muhammad
+          </Text>
         </View>
       )}
       {items.length > 0 && !isFetching && (
@@ -99,6 +103,7 @@ export default function RenderItems({
           />
         </View>
       )}
+      </>
     </View>
   );
 }
