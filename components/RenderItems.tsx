@@ -39,6 +39,10 @@ export default function RenderItems({
   const appColor = Appearance.getColorScheme();
   console.log(items);
 
+
+  console.log("Items:", items);
+  console.log("Fetch Error2:", fetchError);
+
   return (
     <View style={styles.container}>
       <>

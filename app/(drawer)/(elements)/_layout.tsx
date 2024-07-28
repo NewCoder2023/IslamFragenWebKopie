@@ -59,6 +59,7 @@ const separateWords = (name: string) => {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
+
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>

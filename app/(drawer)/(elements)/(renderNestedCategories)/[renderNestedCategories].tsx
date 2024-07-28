@@ -30,7 +30,6 @@ export default function RenderNestedCategories() {
     refetchTable();
   }, []);
 
-  console.log(category);
   if (!category) {
     return (
       <View style={styles.container}>

@@ -39,6 +39,11 @@ const RenderNestedItems: React.FC<RenderNestedItemsProps> = ({
   const themeStyles = coustomTheme();
   const appColor = Appearance.getColorScheme();
 
+  console.log("Items:", items);
+  console.log("Fetch Error:", fetchError);
+  console.log("Is Fetching Table:", isFetchinTable);
+  
+
   return (
     <View style={styles.container}>
       <>
@@ -49,7 +54,7 @@ const RenderNestedItems: React.FC<RenderNestedItemsProps> = ({
             </Text>
           </View>
         )}
-        {isFetchinTable && !isFetchinTable && (
+        {isFetchinTable && (
           <View style={styles.loadingIndicator}>
             <ActivityIndicator
               size='large'
