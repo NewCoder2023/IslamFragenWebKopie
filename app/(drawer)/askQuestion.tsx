@@ -19,6 +19,7 @@ import { coustomTheme } from "components/coustomTheme";
 import Checkbox from "expo-checkbox";
 import { useSendQuestion } from "components/useSendQuestion";
 import Toast from "react-native-toast-message";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { Picker } from "@react-native-picker/picker";
 import { Text } from "components/Themed";
 import ConfirmHcaptcha from "@hcaptcha/react-native-hcaptcha";
@@ -80,7 +81,7 @@ export default function askQuestion() {
 
   useEffect(() => {
     if (showCaptcha && captchaRef.current) {
-      captchaRef.current.show();
+      captchaRef.current.execute();
     }
   }, [showCaptcha]);
 
@@ -161,47 +162,45 @@ export default function askQuestion() {
     }
   };
 
-  const onMessage = async (event) => {
-    if (event && event.nativeEvent.data) {
-      const token = event.nativeEvent.data;
+  const verifiedToken = async (token: string) => {
+    setCaptchaToken(token);
 
-      if (["cancel", "error", "expired"].includes(token)) {
-        captchaRef.current.hide();
-        setShowCaptcha(false);
-        Alert.alert(
-          "Fehler",
-          "Captcha-Überprüfung fehlgeschlagen. Bitte versuche es erneut."
+    if (isFormValid) {
+      const success = await sendEmail(
+        name,
+        age,
+        email,
+        marja,
+        gender,
+        question
+      );
+      if (success) {
+        setShowCaptcha(false); // Hide captcha on success
+        alert(
+          "Frage erfolgreich gesendet! Du erhälst die Antwort in wenigen Tagen als Email"
         );
-      } else if (token === "open") {
-        console.log("Visual challenge opened");
+        router.navigate("/");
+        setFormState(initialFormState); // Reset form state on success
       } else {
-        console.log("Verified code from hCaptcha", token);
-        setCaptchaToken(token);
-        captchaRef.current.hide();
-
-        if (isFormValid) {
-          const success = await sendEmail(
-            name,
-            age,
-            email,
-            marja,
-            gender,
-            question,
-            token
-          );
-          if (success) {
-            setShowCaptcha(false); // Hide captcha on success
-            alert(
-              "Frage erfolgreich gesendet! Du erhälst die Antwort in wenigen Tagen als Email"
-            );
-            router.navigate("(elements)");
-            setFormState(initialFormState); // Reset form state on success
-          } else {
-            alert("Fehler! Versuch es später erneut");
-          }
-        }
+        alert("Fehler! Versuch es später erneut");
       }
     }
+  };
+
+  const errorToken = async (err: string) => {
+    setShowCaptcha(false);
+    Alert.alert(
+      "Fehler",
+      "Captcha-Überprüfung fehlgeschlagen. Bitte versuche es erneut."
+    );
+  };
+
+  const closeToken = async () => {
+    setShowCaptcha(false);
+  };
+
+  const expireToken = async () => {
+    setShowCaptcha(false);
   };
 
   return (
@@ -359,13 +358,14 @@ export default function askQuestion() {
         />
       </ScrollView>
       {showCaptcha && (
-        <ConfirmHcaptcha
+        <HCaptcha
+          sitekey='46059823-5a16-4179-98ac-347075bcf465'
+          size='normal'
+          onVerify={(token) => verifiedToken(token)}
           ref={captchaRef}
-          size='compact'
-          siteKey={siteKey}
-          baseUrl={baseUrl}
-          onMessage={onMessage}
-          languageCode='de'
+          onClose={closeToken}
+          onExpire={expireToken}
+          onError={errorToken}
         />
       )}
     </View>
