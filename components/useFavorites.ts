@@ -44,7 +44,7 @@ export default function useFavorites() {
       setFavorites(newFavorites);
       await storeFavorites(newFavorites, change);
     } else {
-      notifySuccess("Zu Favoriten hinzugefügt!!!!");
+      notifySuccess("Zu Favoriten hinzugefügt!");
 
       const newFavorites = [
         ...favorites,
