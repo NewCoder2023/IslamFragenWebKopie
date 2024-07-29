@@ -1,4 +1,3 @@
-
 import { Pressable, StyleSheet } from "react-native";
 import { View, Text } from "components/Themed";
 import QuestionLinks from "components/QuestionLinks";
@@ -12,15 +11,13 @@ import { Appearance } from "react-native";
 import { useSetFontSize } from "components/fontSizeStore";
 import useFetchSubCategories from "components/useFetchSubCategories";
 import { Alert } from "react-native";
-
 export default function index() {
   const colorscheme = useColorScheme();
   const themeStyles = coustomTheme();
   const { fontSize, setLineHeight, setFontSize } = useSetFontSize();
 
-  
-// Test
-// test 2
+  // Test
+  // test 2
   return (
     <View style={styles.container}>
       <View style={[styles.headerContainer, themeStyles.indexBorderDash]}>
@@ -29,23 +26,23 @@ export default function index() {
             source={require("assets/images/background.png")}
             style={styles.calligraphyBackground}
           > */}
-            <View style={styles.headerElements}>
-              <View style={styles.headerImageContainer}>
-                <Image
-                  style={styles.headerImage}
-                  source={require("assets/images/logo.png")}
-                  contentFit='contain'
-                />
-              </View>
-              <View style={styles.headerTextContainer}>
-                <Text style={[styles.headerText, themeStyles.inverseTextIndex]}>
-                  Islam-Fragen
-                </Text>
-                <Text style={[styles.headerDash, themeStyles.indexBorderDash]}>
-                  __________
-                </Text>
-              </View>
+          <View style={styles.headerElements}>
+            <View style={styles.headerImageContainer}>
+              <Image
+                style={styles.headerImage}
+                source={require("assets/images/logo.png")}
+                contentFit='contain'
+              />
             </View>
+            <View style={styles.headerTextContainer}>
+              <Text style={[styles.headerText, themeStyles.inverseTextIndex]}>
+                Islam-Fragen
+              </Text>
+              <Text style={[styles.headerDash, themeStyles.indexBorderDash]}>
+                __________
+              </Text>
+            </View>
+          </View>
           {/* </ImageBackground> */}
         </View>
       </View>
@@ -58,11 +55,11 @@ export default function index() {
 
 const styles = StyleSheet.create({
   container: {
-   flex: 1,
+    flex: 1,
     backgroundColor: "transparent",
   },
   headerContainer: {
-   flex: 1,
+    flex: 1,
     borderBottomWidth: 3,
   },
   header: {
@@ -87,7 +84,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: -30
+    marginTop: -30,
   },
   headerImageContainer: {
     height: "80%",
@@ -97,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   headerDash: {
-   marginBottom: 30,
+    marginBottom: 30,
     marginTop: -10,
     fontSize: 20,
   },
@@ -142,7 +139,7 @@ const styles = StyleSheet.create({
   },
   searchField: {},
   categoryContainer: {
-   flex: 2,
-   marginBottom: 20
+    flex: 2,
+    marginBottom: 20,
   },
 });

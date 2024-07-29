@@ -1,15 +1,13 @@
-import React from "react";
-import { FlatList, useColorScheme } from "react-native";
-import { View, Text } from "./Themed";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Dimensions, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { FontAwesome } from "@expo/vector-icons";
 import { deletePosts } from "components/deletePosts";
-import { Dimensions } from "react-native";
 import Colors from "constants/Colors";
-import { StyleSheet } from "react-native";
 import ImageCount from "./ImageCount";
-import { useState } from "react";
 import { coustomTheme } from "./coustomTheme";
+import { useColorScheme } from "react-native";
+
 interface RenderItemsFlashListProps {
   item: any;
   isLoggedIn: boolean;
@@ -21,15 +19,15 @@ export const RenderItemsFlashList = ({
 }: RenderItemsFlashListProps) => {
   const screenWidth = Dimensions.get("window").width;
   const [currentIndex, setCurrentIndex] = useState(0);
-
   const colorScheme = useColorScheme();
-  const themeStyles = coustomTheme(colorScheme);
+  const themeStyles = coustomTheme();
 
-  // Get the current index of image for setting the icon
-  const handleScroll = (event: any) => {
-    const contentOffsetX = event.nativeEvent.contentOffset.x;
-    const index = Math.round(contentOffsetX / (screenWidth - 40));
-    setCurrentIndex(index);
+  const nextImage = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % item.imagePaths.length);
+  };
+
+  const prevImage = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + item.imagePaths.length) % item.imagePaths.length);
   };
 
   return (
@@ -55,76 +53,46 @@ export const RenderItemsFlashList = ({
         {item.content && (
           <Text style={styles.newsContentText}>{item.content}</Text>
         )}
-        {item.imagePaths && item.imagePaths.length == 1 ? (
+        {item.imagePaths && item.imagePaths.length > 0 ? (
           <View style={styles.ImageContainer}>
             <Image
               contentFit='cover'
-              style={styles.newsImageSingle}
-              source={{ uri: item.imagePaths[0] }}
-              recyclingKey={`${item.imagePaths[0]}`}
+              style={styles.newsImageSeveral}
+              source={{ uri: item.imagePaths[currentIndex] }}
+              recyclingKey={`${item.imagePaths[currentIndex]}-${currentIndex}`}
             />
+            <View style={styles.buttonContainer}>
+              <Pressable onPress={prevImage} style={styles.button}>
+                <Text style={styles.buttonText}>Previous</Text>
+              </Pressable>
+              <Pressable onPress={nextImage} style={styles.button}>
+                <Text style={styles.buttonText}>Next</Text>
+              </Pressable>
+            </View>
+            {item.imagePaths.length > 1 && (
+              <ImageCount displayImageCounter={item.imagePaths.map((_, index) =>
+                index === currentIndex ? (
+                  <FontAwesome
+                    name='circle'
+                    size={10}
+                    style={themeStyles.characterCountNewsImage}
+                  />
+                ) : (
+                  <FontAwesome
+                    name='circle-o'
+                    size={10}
+                    style={themeStyles.characterCountNewsImage}
+                  />
+                )
+              )} />
+            )}
           </View>
-        ) : item.imagePaths && item.imagePaths.length > 1 ? (
-          (() => {
-            const repeatCount = item.imagePaths ? item.imagePaths.length : 0;
-
-            const characterCurrent = (
-              <FontAwesome
-                name='circle'
-                size={10}
-                style={themeStyles. characterCountNewsImage} />
-            );
-            const characterNext = (
-              <FontAwesome
-                name='circle-o'
-                size={10}
-                style={themeStyles. characterCountNewsImage}
-              />
-            );
-
-            // Set Array with the icons based on index
-            let displayImageCounter = new Array(repeatCount).fill(
-              characterNext
-            );
-            displayImageCounter[currentIndex] = characterCurrent;
-
-            return (
-              <View style={styles.FlatListContainer}>
-                <FlatList
-                  horizontal
-                  style={styles.FlatListImageStyle}
-                  pagingEnabled
-                  disableIntervalMomentum
-                  showsHorizontalScrollIndicator={false}
-                  decelerationRate='fast'
-                  keyExtractor={(item, index) => `${item}-${index}`}
-                  snapToInterval={screenWidth - 40}
-                  snapToAlignment={"start"}
-                  data={item.imagePaths}
-                  renderItem={({ item, index }) => (
-                    <View style={styles.ImageContainer}>
-                      <Image
-                        contentFit='cover'
-                        style={styles.newsImageSeveral}
-                        source={{ uri: item }}
-                        recyclingKey={`${item}-${index}`}
-                      />
-                    </View>
-                  )}
-                  onScroll={handleScroll}
-                  scrollEventThrottle={16}
-                />
-                {repeatCount > 1 && (
-                  <ImageCount displayImageCounter={displayImageCounter} />
-                )}
-              </View>
-            );
-          })()
         ) : null}
       </View>
     </View>
   );
 };
+
 const screenWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
@@ -216,7 +184,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "transparent",
   },
-
   ImageContainerFooter: {
     marginTop: 15,
     padding: 5,
@@ -237,12 +204,25 @@ const styles = StyleSheet.create({
     height: "auto",
     aspectRatio: 0.8,
   },
-
   FlatListContainer: {
     flex: 1,
     alignItems: "center",
     padding: 0,
     margin: 0,
     backgroundColor: "transparent",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: screenWidth - 50,
+    marginTop: 10,
+  },
+  button: {
+    padding: 10,
+    backgroundColor: "black",
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "white",
   },
 });

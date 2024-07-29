@@ -375,6 +375,10 @@ export default function askQuestion() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "column",
+    width: "100%",
+    maxWidth: 700,
+    marginHorizontal: "auto",
   },
   headerButton: {
     backgroundColor: "transparent",
