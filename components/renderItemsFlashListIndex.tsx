@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Dimensions, Pressable } from "react-native";
+import {  StyleSheet, Dimensions, Pressable } from "react-native";
+import { Text, View } from "./Themed";
 import { Image } from "expo-image";
 import { FontAwesome } from "@expo/vector-icons";
 import { deletePosts } from "components/deletePosts";
 import Colors from "constants/Colors";
 import ImageCount from "./ImageCount";
 import { coustomTheme } from "./coustomTheme";
-import { useColorScheme } from "react-native";
+import { useColorScheme } from "hooks/useColorScheme.web";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 interface RenderItemsFlashListProps {
   item: any;
@@ -34,10 +36,10 @@ export const RenderItemsFlashList = ({
   };
 
   return (
-    <View style={[styles.newsContainer, themeStyles.containerContrast]}>
+    <View style={[styles.container, themeStyles.containerContrast]}>
       <View style={styles.newsHeader}>
         <Image
-          style={styles.newsImageMaher}
+          style={styles.newsImageAsk}
           source={require("assets/images/ask.png")}
           contentFit='contain'
         />
@@ -69,10 +71,10 @@ export const RenderItemsFlashList = ({
               <>
                 <View style={styles.buttonContainer}>
                   <Pressable onPress={prevImage} style={styles.button}>
-                    <Text style={styles.buttonText}>Previous</Text>
+                    <AntDesign name='arrowleft' size={34} color={colorScheme === "light" ? "black" : "white"} />
                   </Pressable>
                   <Pressable onPress={nextImage} style={styles.button}>
-                    <Text style={styles.buttonText}>Next</Text>
+                    <AntDesign name='arrowright' size={34} color={colorScheme === "light" ? "black" : "white"} />
                   </Pressable>
                 </View>
                 <ImageCount
@@ -104,37 +106,11 @@ export const RenderItemsFlashList = ({
 const screenWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    
-  },
-  headerContainer: {
-    flexDirection: "row",
-    flex: 0.1,
-    marginTop: 20,
-    marginHorizontal: 14,
-  },
-  headerTitle: {
-    flex: 1,
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-  activityContainer: {
-    flexDirection: "column",
-    gap: 10,
-    marginBottom: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  activityText: {
-    fontWeight: "bold",
-  },
-  mainContainer: {
-    flex: 0.9,
-  },
-  newsContainer: {
+    width: "100%",
+    maxWidth: 700,
+    marginHorizontal: "auto",
     marginTop: 5,
     marginBottom: 10,
-    marginHorizontal: 10,
     borderWidth: 2,
     borderRadius: 10,
   },
@@ -148,7 +124,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingBottom: 10,
   },
-  newsImageMaher: {
+  newsImageAsk: {
     height: 30,
     width: 30,
   },
@@ -224,12 +200,12 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: "100%",
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
+    justifyContent: "center",
+    marginTop: 50,
+    backgroundColor: "transparent"
   },
   button: {
     padding: 10,
-    backgroundColor: "black",
     borderRadius: 5,
     marginHorizontal: 10,
   },

@@ -8,12 +8,10 @@ import { useColorScheme } from "react-native";
 import { coustomTheme } from "./coustomTheme";
 
 const HeaderFlashListIndex = ({ isLoggedIn }: any) => {
-
   const colorScheme = useColorScheme();
-  const themeStyles = coustomTheme(colorScheme)
+  const themeStyles = coustomTheme();
   return (
     <View style={styles.headerContainer}>
-      <Text style={styles.headerTitle}>Neuigkeiten</Text>
       {isLoggedIn ? (
         <Link href='/adminDashboard' asChild>
           <Pressable>

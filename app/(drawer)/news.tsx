@@ -173,9 +173,7 @@ const screenWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
-    maxWidth: 700,
-    marginHorizontal: "auto",
+   
   },
   activityContainer: {
     flexDirection: "column",
