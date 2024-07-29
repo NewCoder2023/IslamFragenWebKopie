@@ -10,6 +10,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { useColorScheme } from "components/useColorScheme";
 import { Header } from "react-native/Libraries/NewAppScreen";
+import Toast from "react-native-toast-message";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -58,7 +59,7 @@ const separateWords = (name: string) => {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-
+  
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
@@ -77,7 +78,7 @@ function RootLayoutNav() {
           }}
         />
       </Stack>
-      {/* <Toast /> */}
+
     </ThemeProvider>
   );
 }

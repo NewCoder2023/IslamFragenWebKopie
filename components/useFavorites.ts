@@ -1,5 +1,10 @@
 import { useLayoutEffect, useState } from "react";
-import Toast from "react-native-toast-message";
+import {
+  CustomToastContainer,
+  notifySuccess,
+  notifyError,
+  notifyInfo,
+} from "components/toast";
 import { useIsChanging } from "components/favStore";
 import { storeFavorites, getFavorites } from "components/manageFavorites";
 
@@ -30,7 +35,7 @@ export default function useFavorites() {
         (item) => item.table == table && item.id == id && item.isFavorite
       )
     ) {
-      alert("Von Favoriten entfernt!");
+      notifyError("Von Favoriten entfernt!");
       const newFavorites = favorites.map((item) =>
         item.table == table && item.id == id
           ? { ...item, isFavorite: false }
@@ -39,7 +44,7 @@ export default function useFavorites() {
       setFavorites(newFavorites);
       await storeFavorites(newFavorites, change);
     } else {
-      alert("Zu Favoriten hinzugefügt!");
+      notifySuccess("Zu Favoriten hinzugefügt!!!!");
 
       const newFavorites = [
         ...favorites,

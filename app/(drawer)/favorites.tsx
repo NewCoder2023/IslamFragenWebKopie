@@ -7,6 +7,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import RenderFavorites from "components/RenderFavorites";
 import { useIsChanging } from "components/favStore";
+import {
+  CustomToastContainer,
+  notifySuccess,
+  notifyError,
+  notifyInfo,
+} from "components/toast";
 
 export default function favourites() {
   interface Favorite {
@@ -69,6 +75,7 @@ export default function favourites() {
           </Text>
         </View>
       )}
+      <CustomToastContainer />
     </View>
   );
 }
@@ -76,7 +83,6 @@ export default function favourites() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
- 
   },
   favoriteContainer: {
     flex: 1,
@@ -93,5 +99,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
   },
-  
 });

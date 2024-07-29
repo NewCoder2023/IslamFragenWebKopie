@@ -11,6 +11,13 @@ import { Appearance } from "react-native";
 import { useSetFontSize } from "components/fontSizeStore";
 import useFetchSubCategories from "components/useFetchSubCategories";
 import { Alert } from "react-native";
+import {
+  CustomToastContainer,
+  notifySuccess,
+  notifyError,
+  notifyInfo,
+} from "components/toast";
+
 export default function index() {
   const colorscheme = useColorScheme();
   const themeStyles = coustomTheme();
@@ -20,6 +27,7 @@ export default function index() {
   // test 2
   return (
     <View style={styles.container}>
+     <CustomToastContainer />
       <View style={[styles.headerContainer, themeStyles.indexBorderDash]}>
         <View style={[styles.header, themeStyles.backgroundIndex]}>
           {/* <ImageBackground

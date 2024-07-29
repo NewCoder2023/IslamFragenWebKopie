@@ -27,7 +27,10 @@ export const RenderItemsFlashList = ({
   };
 
   const prevImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + item.imagePaths.length) % item.imagePaths.length);
+    setCurrentIndex(
+      (prevIndex) =>
+        (prevIndex - 1 + item.imagePaths.length) % item.imagePaths.length
+    );
   };
 
   return (
@@ -61,30 +64,35 @@ export const RenderItemsFlashList = ({
               source={{ uri: item.imagePaths[currentIndex] }}
               recyclingKey={`${item.imagePaths[currentIndex]}-${currentIndex}`}
             />
-            <View style={styles.buttonContainer}>
-              <Pressable onPress={prevImage} style={styles.button}>
-                <Text style={styles.buttonText}>Previous</Text>
-              </Pressable>
-              <Pressable onPress={nextImage} style={styles.button}>
-                <Text style={styles.buttonText}>Next</Text>
-              </Pressable>
-            </View>
+
             {item.imagePaths.length > 1 && (
-              <ImageCount displayImageCounter={item.imagePaths.map((_, index) =>
-                index === currentIndex ? (
-                  <FontAwesome
-                    name='circle'
-                    size={10}
-                    style={themeStyles.characterCountNewsImage}
-                  />
-                ) : (
-                  <FontAwesome
-                    name='circle-o'
-                    size={10}
-                    style={themeStyles.characterCountNewsImage}
-                  />
-                )
-              )} />
+              <>
+                <View style={styles.buttonContainer}>
+                  <Pressable onPress={prevImage} style={styles.button}>
+                    <Text style={styles.buttonText}>Previous</Text>
+                  </Pressable>
+                  <Pressable onPress={nextImage} style={styles.button}>
+                    <Text style={styles.buttonText}>Next</Text>
+                  </Pressable>
+                </View>
+                <ImageCount
+                  displayImageCounter={item.imagePaths.map((_, index) =>
+                    index === currentIndex ? (
+                      <FontAwesome
+                        name='circle'
+                        size={10}
+                        style={themeStyles.characterCountNewsImage}
+                      />
+                    ) : (
+                      <FontAwesome
+                        name='circle-o'
+                        size={10}
+                        style={themeStyles.characterCountNewsImage}
+                      />
+                    )
+                  )}
+                />
+              </>
             )}
           </View>
         ) : null}
@@ -97,6 +105,7 @@ const screenWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    
   },
   headerContainer: {
     flexDirection: "row",
@@ -194,7 +203,8 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   newsImageSeveral: {
-    width: screenWidth - 50,
+    // width: screenWidth - 50,
+    width: "70%",
     height: "auto",
     marginRight: 10,
     aspectRatio: 0.8,
@@ -212,15 +222,16 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   buttonContainer: {
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
-    width: screenWidth - 50,
     marginTop: 10,
   },
   button: {
     padding: 10,
     backgroundColor: "black",
     borderRadius: 5,
+    marginHorizontal: 10,
   },
   buttonText: {
     color: "white",

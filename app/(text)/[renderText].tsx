@@ -22,6 +22,12 @@ import * as Clipboard from "expo-clipboard";
 import { Picker } from "@react-native-picker/picker";
 import { Modal } from "react-native";
 import { formatTitle } from "components/formatTitle";
+import {
+  CustomToastContainer,
+  notifySuccess,
+  notifyError,
+  notifyInfo,
+} from "components/toast";
 
 export default function RenderText() {
   const { id, table, title } = useLocalSearchParams<{
@@ -34,7 +40,7 @@ export default function RenderText() {
     table || "",
     title || ""
   );
- 
+
   const key = `text-${id}-${table}`;
   const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
   const CONTENT_OFFSET_THRESHOLD = 300;
@@ -143,7 +149,7 @@ export default function RenderText() {
 
   return (
     <View style={styles.container}>
-      {/* Change header Title */}
+      <CustomToastContainer />
       <Modal
         visible={isPickerVisible}
         transparent={true}
@@ -509,7 +515,6 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     borderWidth: 1,
     borderRadius: 10,
-    
   },
   answersContainer: {
     flex: 1,
@@ -621,5 +626,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-
-

@@ -25,6 +25,12 @@ import { Text } from "components/Themed";
 import ConfirmHcaptcha from "@hcaptcha/react-native-hcaptcha";
 import { router } from "expo-router";
 import * as Network from "expo-network";
+import {
+  CustomToastContainer,
+  notifySuccess,
+  notifyError,
+  notifyInfo,
+} from "components/toast";
 
 const siteKey = "46059823-5a16-4179-98ac-347075bcf465";
 const baseUrl = "https://hcaptcha.com";
@@ -98,39 +104,38 @@ export default function askQuestion() {
       !question ||
       question.trim() === ""
     ) {
-      Alert.alert("Fehler", "Bitte fülle alle Pflichtfelder aus!");
+      notifyError("Bitte fülle alle Pflichtfelder aus!");
       return false;
     }
 
     const ageNumber = parseInt(age);
     if (isNaN(ageNumber) || ageNumber <= 0) {
-      Alert.alert("Fehler", "Bitte gebe ein gültiges Alter ein!");
+      notifyError("Bitte gebe ein gültiges Alter ein!");
       return false;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      Alert.alert("Fehler", "Bitte gebe eine gültige E-Mail-Adresse ein!");
+      notifyError("Bitte gebe eine gültige E-Mail-Adresse ein!");
       return false;
     }
 
     if (email !== validateEmail) {
-      Alert.alert("Fehler", "Die E-Mail-Adressen stimmen nicht überein!");
+      notifyError("Die E-Mail-Adressen stimmen nicht überein!");
       return false;
     }
 
     if (gender === genderOptions[0].value) {
-      Alert.alert("Fehler", "Bitte wähle dein Geschlecht aus!");
+      notifyError("Bitte wähle dein Geschlecht aus!");
       return false;
     }
     if (marja === marjaOptions[0].value) {
-      Alert.alert("Fehler", "Bitte wähle einen Marja aus!");
+      notifyError("Bitte wähle einen Marja aus!");
       return false;
     }
 
     if (!acceptRules) {
-      Alert.alert(
-        "Fehler",
+      notifyError(
         "Bitte lies die Richtlinien und akzeptiere sie um die E-Mail versenden zu können!"
       );
       return false;
@@ -155,7 +160,7 @@ export default function askQuestion() {
         setIsFormValid(true); // Mark the form as valid
         setShowCaptcha(true); // Show hCaptcha challenge
       } else {
-        Alert.alert(
+        notifyError(
           "Bitte stelle sicher, dass du mit dem Internet verbunden bist, bevor du eine Frage schickst"
         );
       }
@@ -176,21 +181,20 @@ export default function askQuestion() {
       );
       if (success) {
         setShowCaptcha(false); // Hide captcha on success
-        alert(
+        notifySuccess(
           "Frage erfolgreich gesendet! Du erhälst die Antwort in wenigen Tagen als Email"
         );
         router.navigate("/");
         setFormState(initialFormState); // Reset form state on success
       } else {
-        alert("Fehler! Versuch es später erneut");
+        notifyError("Fehler! Versuch es später erneut");
       }
     }
   };
 
   const errorToken = async (err: string) => {
     setShowCaptcha(false);
-    Alert.alert(
-      "Fehler",
+    notifyError(
       "Captcha-Überprüfung fehlgeschlagen. Bitte versuche es erneut."
     );
   };
@@ -205,6 +209,7 @@ export default function askQuestion() {
 
   return (
     <View style={styles.container}>
+      {/* <CustomToastContainer /> */}
       <Stack.Screen
         options={{
           headerTitle: "Eine Frage stellen",

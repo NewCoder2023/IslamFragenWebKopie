@@ -23,6 +23,7 @@ import { Image } from "expo-image";
 import { useRefetchNewsStore } from "components/refetchNews";
 import { useIsNewUpdateAvailable } from "components/newsUpdateStore";
 
+
 export default function index() {
   const [refreshing, setRefreshing] = useState(false);
   const { posts, fetchError, refetch, updateAvailable, applyUpdates } =
@@ -44,8 +45,8 @@ export default function index() {
       refetch();
       setRefetch();
 
-      if(newUpdateAvailable)  {
-        update(false)
+      if (newUpdateAvailable) {
+        update(false);
       }
     }
   }, []);
@@ -172,6 +173,9 @@ const screenWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: "100%",
+    maxWidth: 700,
+    marginHorizontal: "auto",
   },
   activityContainer: {
     flexDirection: "column",
@@ -295,6 +299,7 @@ const styles = StyleSheet.create({
   },
   FlashContainer: {
     flex: 1,
+    
   },
   emptyText: {
     fontSize: 25,
