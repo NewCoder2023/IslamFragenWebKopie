@@ -17,35 +17,35 @@ export default function QuestionLinks() {
     {
       name: "Rechtsfragen",
       image: require("assets/images/rechtsfragen.png"),
-      path: "elements/(renderNestedCategories)/[renderNestedCategories]",
+      path: "elements/renderNestedCategories/[renderNestedCategories]",
     },
     {
       name: "Quran",
       image: require("assets/images/quran.png"),
-      path: "elements/(renderNestedCategories)/[renderNestedCategories]",
+      path: "elements/renderNestedCategories/[renderNestedCategories]",
     },
     {
       name: "Historie",
       image: require("assets/images/historie.png"),
-      path: "elements/(renderNestedCategories)/[renderNestedCategories]",
+      path: "elements/renderNestedCategories/[renderNestedCategories]",
     },
   ];
   const categoriesRight = [
     {
       name: "Glaubensfragen",
       image: require("assets/images/glaubensfragen.png"),
-      path: "elements/(renderNestedCategories)/[renderNestedCategories]",
+      path: "elements/renderNestedCategories/[renderNestedCategories]",
     },
     {
       name: "Ethik",
       image: require("assets/images/ethik.png"),
-      path: "elements/(renderNestedCategories)/[renderNestedCategories]",
+      path: "elements/renderNestedCategories/[renderNestedCategories]",
     },
 
     {
       name: "Ratschläge",
       image: require("assets/images/ratschlaege.png"),
-      path: "elements/(renderNestedCategories)/[renderNestedCategories]",
+      path: "elements/renderNestedCategories/[renderNestedCategories]",
     },
   ];
 

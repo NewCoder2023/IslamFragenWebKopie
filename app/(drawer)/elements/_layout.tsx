@@ -64,14 +64,14 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen
-          name='(renderCategory)/[renderCategory]'
+          name='renderCategory/[renderCategory]'
           options={{
             headerShown: false,
           }}
         />
 
         <Stack.Screen
-          name='(renderNestedCategories)/[renderNestedCategories]'
+          name='renderNestedCategories/[renderNestedCategories]'
           options={{
             headerShown: false,
           }}
