@@ -8,6 +8,8 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { router } from "expo-router";
+import { useRouter } from "expo-router";
 
 import { useColorScheme } from "hooks/useColorScheme.web";
 
@@ -41,4 +43,3 @@ export default function RootLayout() {
     </ThemeProvider>
   );
 }
-

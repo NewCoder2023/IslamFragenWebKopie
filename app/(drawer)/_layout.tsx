@@ -3,6 +3,8 @@ import { Drawer } from "expo-router/drawer";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Pressable } from "react-native";
+import { router } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function Layout() {
   return (
@@ -23,7 +25,7 @@ export default function Layout() {
             drawerItemStyle: { height: 0 }, // Hide the item by setting its height to 0
           }}
         />
-        
+
         <Drawer.Screen
           name='news' // This is the name of the page and must match the url from root
           options={{

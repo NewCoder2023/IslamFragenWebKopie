@@ -11,6 +11,8 @@ import { useEffect } from "react";
 import { useColorScheme } from "components/useColorScheme";
 import { Header } from "react-native/Libraries/NewAppScreen";
 import Toast from "react-native-toast-message";
+import { router } from "expo-router";
+import { useRouter } from "expo-router";
 
 export {
   // Catch any errors thrown by the Layout component.
