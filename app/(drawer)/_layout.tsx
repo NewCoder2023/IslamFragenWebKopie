@@ -16,7 +16,7 @@ export default function Layout() {
           }}
         />
         <Drawer.Screen
-          name='(elements)' // This is the name of the page and must match the url from root
+          name='elements' // This is the name of the page and must match the url from root
           options={{
             drawerLabel: () => null,
             title: "",

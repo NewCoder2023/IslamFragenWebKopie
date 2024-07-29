@@ -81,7 +81,7 @@ const RenderNestedItems: React.FC<RenderNestedItemsProps> = ({
                   style={styles.FlashListItems}
                   key={item.id.toString()}
                   href={{
-                    pathname: "(renderCategory)/[renderCategory]",
+                    pathname: "elements/(renderCategory)/[renderCategory]",
                     params: {
                       subCategory: `${encodeTitle(item.title)}`,
                       id: item.id.toString(),

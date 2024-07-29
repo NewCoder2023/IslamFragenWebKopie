@@ -18,7 +18,7 @@ export {
 } from "expo-router";
 
 // export const unstable_settings = {
- 
+
 //   initialRouteName: "(elements)/index",
 // };
 
@@ -59,7 +59,6 @@ const separateWords = (name: string) => {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-  
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
@@ -78,7 +77,6 @@ function RootLayoutNav() {
           }}
         />
       </Stack>
-
     </ThemeProvider>
   );
 }

@@ -18,11 +18,16 @@ export default function RenderNestedCategories() {
   };
   const { tableNames, fetchError, isFetchinTable, fetchTableNames } =
     useFetchTableNames();
+
+    console.log("tableNames" + tableNames)
+
   const { hasRefetched, setRefetch } = useRefetchTableStore();
+
+  console.log("hasRefetched" + hasRefetched)
 
   useLayoutEffect(() => {
     const refetchTable = async () => {
-      if (!hasRefetched) {
+      if (category && !hasRefetched) {
         await fetchTableNames();
         setRefetch();
       }

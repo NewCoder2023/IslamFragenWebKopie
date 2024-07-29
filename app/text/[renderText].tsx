@@ -7,7 +7,7 @@ import { useFetchText } from "components/useFetchText";
 import Colors from "constants/Colors";
 import { Stack } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
-import { useColorScheme } from "react-native";
+import { useColorScheme } from "hooks/useColorScheme.web";
 import Markdown from "react-native-markdown-display";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRef } from "react";
@@ -28,6 +28,7 @@ import {
   notifyError,
   notifyInfo,
 } from "components/toast";
+import Entypo from "@expo/vector-icons/Entypo";
 
 export default function RenderText() {
   const { id, table, title } = useLocalSearchParams<{
@@ -52,6 +53,7 @@ export default function RenderText() {
     setLineHeight,
     setPickerValue,
   } = useSetFontSize();
+  const [canBack, setCanBack] = useState(false);
   const { toggleFavorite, isInFavorites } = useFavorites();
   const [marja, setMarja] = useState<string[]>([]);
   const [isCopiedSingle, setIsCopiedSingle] = useState(false);
@@ -100,6 +102,10 @@ export default function RenderText() {
       // Clear timeout when component unmounts
       cleanTimeout();
     };
+  }, []);
+
+  useLayoutEffect(() => {
+    router.canGoBack() ? setCanBack(true) : setCanBack(false);
   }, []);
 
   const handleCheckboxChange = (value: string) => {
@@ -215,6 +221,20 @@ export default function RenderText() {
               />
             </View>
           ),
+          headerLeft: () =>
+            canBack ? (
+              <View style={styles.canBack}>
+                <Pressable onPress={router.back}>
+                  <Entypo name='chevron-left' size={24} color={colorScheme === "light" ? "black" : "white"} />
+                </Pressable>
+              </View>
+            ) : (
+              <View style={styles.canBack}>
+                <Pressable onPress={() => router.push("/")}>
+                  <Entypo name='home' size={24} color={colorScheme === "light" ? "black" : "white"} />
+                </Pressable>
+              </View>
+            ),
           headerTitle: item ? formatTitle(item.title) : "",
         }}
       />
@@ -460,6 +480,10 @@ const styles = StyleSheet.create({
     gap: 15,
     backgroundColor: "transparent",
     paddingRight: 15,
+  },
+  canBack: {
+    backgroundColor: "transparent",
+    marginLeft: 15,
   },
   modalContainer: {
     flex: 1,

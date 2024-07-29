@@ -34,7 +34,7 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name='(drawer)' options={{ headerShown: false }} />
-        <Stack.Screen name='(text)' />
+        {/* <Stack.Screen name='text/[renderText]' options={{ headerShown: true }}/> */}
         <Stack.Screen name='rules' options={{ headerTitle: "Richtlinien" }} />
         <Stack.Screen name='+not-found' />
       </Stack>
