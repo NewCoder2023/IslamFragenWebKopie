@@ -75,7 +75,6 @@ export default function favourites() {
           </Text>
         </View>
       )}
-     
     </View>
   );
 }

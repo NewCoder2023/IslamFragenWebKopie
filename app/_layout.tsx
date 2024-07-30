@@ -27,7 +27,7 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  if (!isReady) {
+  if (!isReady || !colorScheme) {
     return null;
   }
 

@@ -3,12 +3,23 @@ import { Drawer } from "expo-router/drawer";
 import { useColorScheme } from "hooks/useColorScheme.web";
 import useColorSchemeStore from "components/colorStore"; // Import the store
 import { createScreenOptions } from "components/headerOptions"; //
+import { Pressable, TextStyle } from "react-native";
 
 export default function Layout() {
   const colorScheme = useColorScheme();
   const toggleColorScheme = useColorSchemeStore(
     (state: any) => state.toggleColorScheme
   );
+
+  const headerWithoutButton = (colorScheme: any) => ({
+    headerStyle: {
+      backgroundColor: colorScheme === "light" ? "white" : "black", // Set background color
+    },
+    headerTintColor: colorScheme === "light" ? "black" : "white", // Set text color
+    headerTitleStyle: {
+      fontWeight: "bold" as TextStyle["fontWeight"], // Ensure correct type
+    },
+  });
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -27,6 +38,7 @@ export default function Layout() {
             drawerLabel: () => null,
             title: "",
             drawerItemStyle: { height: 0 }, // Hide the item by setting its height to 0
+            ...headerWithoutButton(colorScheme)
           }}
         />
 
@@ -43,7 +55,7 @@ export default function Layout() {
           options={{
             drawerLabel: "Frage stellen",
             title: "Eine Frage stellen",
-           
+            ...headerWithoutButton(colorScheme)
           }}
         />
         <Drawer.Screen
