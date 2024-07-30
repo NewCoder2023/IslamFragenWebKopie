@@ -1,15 +1,12 @@
 import React, { useEffect } from "react";
-import {
-  Modal,
-  View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { Modal, View, StyleSheet, Pressable } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Colors from "constants/Colors";
 import { useColorScheme } from "hooks/useColorScheme.web";
 import { coustomTheme } from "./coustomTheme";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { TextInput, TextInputProps } from "react-native";
 
 interface FontSizePickerModalProps {
   visible: boolean;
@@ -39,7 +36,7 @@ const FontSizePickerModal: React.FC<FontSizePickerModalProps> = ({
 
   useEffect(() => {
     const loadSavedFontSize = async () => {
-      const savedFontSize = await AsyncStorage.getItem('fontSize');
+      const savedFontSize = await AsyncStorage.getItem("fontSize");
       if (savedFontSize) {
         const parsedFontSize = parseInt(savedFontSize, 10);
         const selectedOption = fontSizeOptions.find(
@@ -70,6 +67,17 @@ const FontSizePickerModal: React.FC<FontSizePickerModalProps> = ({
         ]}
       >
         <View style={[styles.pickerContainer, themeStyles.modalQuestion]}>
+          <Pressable
+            style={[
+              styles.closeButton,
+              {
+                outline: "none",
+              } as TextInputProps["style"],
+            ]}
+            onPress={() => onClose()}
+          >
+            <AntDesign name='closecircleo' size={20} color='#C3272B' />
+          </Pressable>
           <Picker
             selectedValue={pickerValue}
             onValueChange={(itemValue) => {
@@ -82,7 +90,6 @@ const FontSizePickerModal: React.FC<FontSizePickerModalProps> = ({
                 setFontSize(selectedOption.fontSize);
                 setLineHeight(selectedOption.lineHeight);
               }
-
               // Dismiss Picker
               onClose();
             }}
@@ -117,6 +124,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     padding: 20,
+  },
+  closeButton: {
+    position: "absolute",
+    left: 285,
+    top: -23,
   },
 });
 
