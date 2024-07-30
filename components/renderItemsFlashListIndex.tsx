@@ -106,7 +106,7 @@ export const RenderItemsFlashList = ({
 const screenWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: "95%",
     maxWidth: 700,
     marginHorizontal: "auto",
     marginTop: 5,

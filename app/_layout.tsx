@@ -6,13 +6,10 @@ import {
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "react-native-reanimated";
-import Feather from "@expo/vector-icons/Feather";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useColorScheme } from "hooks/useColorScheme.web";
+import { useColorScheme } from "hooks/useColorScheme";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -21,18 +18,18 @@ export default function RootLayout() {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
+  const [isReady, setIsReady] = useState(false);
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
+      setIsReady(true);
     }
   }, [loaded]);
 
-  if (!loaded) {
+  if (!isReady) {
     return null;
   }
-
-  //
-  //
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
@@ -43,7 +40,7 @@ export default function RootLayout() {
             headerShown: false,
           }}
         />
-         <Stack.Screen name='text/[renderText]' options={{ headerTitle: "" }} />
+        <Stack.Screen name='text/[renderText]' options={{ headerTitle: "" }} />
         <Stack.Screen name='rules' options={{ headerTitle: "Richtlinien" }} />
         <Stack.Screen name='+not-found' />
       </Stack>

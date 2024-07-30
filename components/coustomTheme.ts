@@ -202,8 +202,9 @@ export const darkTheme = {
   },
 };
 
-const colorScheme = useColorScheme();
+
 
 export const coustomTheme = () => {
+  const colorScheme = useColorScheme();
   return colorScheme === "light" ? lightTheme : darkTheme;
 };

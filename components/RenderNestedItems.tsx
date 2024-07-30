@@ -4,7 +4,7 @@ import { FlatList, Pressable, StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import { useColorScheme } from "react-native";
+import { useColorScheme } from "./useColorScheme.web";
 import { FlashList } from "@shopify/flash-list";
 import { Appearance } from "react-native";
 import { coustomTheme } from "./coustomTheme";
@@ -37,7 +37,6 @@ const RenderNestedItems: React.FC<RenderNestedItemsProps> = ({
 
   const colorScheme = useColorScheme();
   const themeStyles = coustomTheme();
-  const appColor = Appearance.getColorScheme();
 
   console.log("Items:", items);
   console.log("Fetch Error:", fetchError);
@@ -73,7 +72,7 @@ const RenderNestedItems: React.FC<RenderNestedItemsProps> = ({
           <View style={styles.itemsContainer}>
             <FlashList
               data={items}
-              extraData={appColor}
+              extraData={colorScheme}
               estimatedItemSize={85}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (

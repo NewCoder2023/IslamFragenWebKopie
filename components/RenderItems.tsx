@@ -3,7 +3,7 @@ import { Pressable, StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import { useColorScheme } from "react-native";
+import { useColorScheme } from "hooks/useColorScheme.web";
 import { FlashList } from "@shopify/flash-list";
 import { Appearance } from "react-native";
 import { coustomTheme } from "./coustomTheme";
@@ -71,7 +71,7 @@ export default function RenderItems({
           <View style={styles.itemsContainer}>
             <FlashList
               data={items}
-              extraData={appColor}
+              extraData={colorScheme}
               estimatedItemSize={82}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (

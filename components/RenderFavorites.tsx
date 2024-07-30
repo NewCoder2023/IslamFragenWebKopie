@@ -2,7 +2,7 @@ import { Text, View } from "components/Themed";
 import { Pressable, StyleSheet } from "react-native";
 import React from "react";
 import { Link } from "expo-router";
-import { useColorScheme } from "react-native";
+import { useColorScheme } from "hooks/useColorScheme.web";
 import { FlashList } from "@shopify/flash-list";
 import { Feather } from "@expo/vector-icons";
 import { Appearance } from "react-native";
@@ -56,7 +56,7 @@ export default function RenderFavorites({ items }) {
         <View style={styles.itemsContainer}>
           <FlashList
             data={items}
-            extraData={appColor}
+            extraData={colorScheme}
             estimatedItemSize={63}
             keyExtractor={(item) => `${item.id}-${item.title}`}
             renderItem={renderItems}
