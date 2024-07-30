@@ -1,12 +1,5 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Drawer } from "expo-router/drawer";
-import { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Pressable } from "react-native";
-import { router } from "expo-router";
-import { useRouter } from "expo-router";
-import Feather from "@expo/vector-icons/Feather";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useColorScheme } from "hooks/useColorScheme.web";
 import useColorSchemeStore from "components/colorStore"; // Import the store
 import { createScreenOptions } from "components/headerOptions"; //
@@ -34,7 +27,6 @@ export default function Layout() {
             drawerLabel: () => null,
             title: "",
             drawerItemStyle: { height: 0 }, // Hide the item by setting its height to 0
-            ...createScreenOptions(colorScheme, toggleColorScheme),
           }}
         />
 
@@ -51,6 +43,7 @@ export default function Layout() {
           options={{
             drawerLabel: "Frage stellen",
             title: "Eine Frage stellen",
+           
           }}
         />
         <Drawer.Screen

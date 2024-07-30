@@ -75,7 +75,7 @@ export default function favourites() {
           </Text>
         </View>
       )}
-      <CustomToastContainer />
+     
     </View>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useFetchSubCategories from "./useFetchSubCategories";
-
+import { useFetchTableNames } from "./useFetchTableNames";
 interface Item {
   id: number;
   title: string;
@@ -14,13 +14,16 @@ interface Item {
 const createStorageKey = (table: string) => `${table}`;
 
 export const useFetchText = (table: string, title: string) => {
+  const { tableNames, isFetchinTable, fetchTableNames } = useFetchTableNames();
   const [item, setItem] = useState<Item | null>(null);
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(false);
-  const { refetch } = useFetchSubCategories();
-
+  const { subCategories, refetch } = useFetchSubCategories();
+console.log(tableNames)
   const fetchData = async () => {
     try {
+      // Make sure tableNames available in case text is opend via link directly
+
       setIsFetching(true);
       await refetch(); // Ensure latest data is available
 
@@ -60,3 +63,4 @@ export const useFetchText = (table: string, title: string) => {
 
   return { item, fetchError, isFetching };
 };
+

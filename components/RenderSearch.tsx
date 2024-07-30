@@ -36,7 +36,7 @@ const RenderSearch: React.FC<RenderSearchProps> = ({ item }) => {
       <Link
         style={styles.FlashListItems}
         href={{
-          pathname: `/(text)/${encodeTitle(item.title)}`,
+          pathname: `/text/[renderText]`,
           params: {
             id: item.id,
             title: `${encodeTitle(item.title)}`,

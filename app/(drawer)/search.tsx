@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingVertical: 12,
     borderColor: "transparent",
+    fontSize: 16
   },
 
   renderSearchContainer: {

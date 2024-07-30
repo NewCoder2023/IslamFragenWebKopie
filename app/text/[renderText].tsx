@@ -11,7 +11,6 @@ import { useColorScheme } from "hooks/useColorScheme.web";
 import Markdown from "react-native-markdown-display";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRef } from "react";
-import useBookmarks from "components/useBookmarks";
 import useFavorites from "components/useFavorites";
 import { coustomTheme } from "components/coustomTheme";
 import { Image } from "expo-image";
@@ -22,12 +21,7 @@ import * as Clipboard from "expo-clipboard";
 import { Picker } from "@react-native-picker/picker";
 import { Modal } from "react-native";
 import { formatTitle } from "components/formatTitle";
-import {
-  CustomToastContainer,
-  notifySuccess,
-  notifyError,
-  notifyInfo,
-} from "components/toast";
+import { CustomToastContainer } from "components/toast";
 import Entypo from "@expo/vector-icons/Entypo";
 
 export default function RenderText() {
@@ -225,13 +219,21 @@ export default function RenderText() {
             canBack ? (
               <View style={styles.canBack}>
                 <Pressable onPress={router.back}>
-                  <Entypo name='chevron-left' size={24} color={colorScheme === "light" ? "black" : "white"} />
+                  <Entypo
+                    name='chevron-left'
+                    size={24}
+                    color={colorScheme === "light" ? "black" : "white"}
+                  />
                 </Pressable>
               </View>
             ) : (
               <View style={styles.canBack}>
                 <Pressable onPress={() => router.push("/")}>
-                  <Entypo name='home' size={24} color={colorScheme === "light" ? "black" : "white"} />
+                  <Entypo
+                    name='home'
+                    size={24}
+                    color={colorScheme === "light" ? "black" : "white"}
+                  />
                 </Pressable>
               </View>
             ),
