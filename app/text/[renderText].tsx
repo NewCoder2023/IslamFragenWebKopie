@@ -20,6 +20,8 @@ import SingleAnswer from "components/SingleAnswereRenderText";
 import { copySingleAnswer } from "components/copySingleAnswer";
 import { copyMultipleAnswers } from "components/copyMultipleAnswers";
 import MultipleAnswers from "components/MultipleAnswersRenderText";
+// import { useFetchTableNames } from "components/useFetchTableNames";
+// import useFetchSubCategories from "components/useFetchSubCategories";
 
 export default function RenderText() {
   const { id, table, title } = useLocalSearchParams<{
@@ -96,13 +98,15 @@ export default function RenderText() {
     { label: "Sayid as-Sistani", value: "Sayid as-Sistani" },
   ];
 
-  // Show answer from different Marja 
+  // Show answer from different Marja
   const handleCheckboxChange = (value: string) => {
     setMarja((prev) =>
       prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
     );
   };
 
+  // const { tableNames, isFetchinTable, fetchTableNames } = useFetchTableNames();
+  // const { subCategories } = useFetchSubCategories();
   return (
     <View style={styles.container}>
       <CustomToastContainer />

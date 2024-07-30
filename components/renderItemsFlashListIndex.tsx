@@ -25,15 +25,17 @@ export const RenderItemsFlashList = ({
   const themeStyles = coustomTheme();
 
   const nextImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % item.imagePaths.length);
+    if (currentIndex < item.imagePaths.length - 1) {
+      setCurrentIndex((prevIndex) => prevIndex + 1);
+    }
   };
 
   const prevImage = () => {
-    setCurrentIndex(
-      (prevIndex) =>
-        (prevIndex - 1 + item.imagePaths.length) % item.imagePaths.length
-    );
+    if (currentIndex > 0) {
+      setCurrentIndex((prevIndex) => prevIndex - 1);
+    }
   };
+
 
   return (
     <View style={[styles.container, themeStyles.containerContrast]}>
