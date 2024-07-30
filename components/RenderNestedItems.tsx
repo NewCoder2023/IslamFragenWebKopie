@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 5,
     marginBottom: 10,
+   
   },
   itemsContainer: {
     flex: 1,
