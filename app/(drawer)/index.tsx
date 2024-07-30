@@ -1,16 +1,10 @@
-import { Pressable, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { View, Text } from "components/Themed";
 import QuestionLinks from "components/QuestionLinks";
 import { coustomTheme } from "components/coustomTheme";
-
 import { Image } from "expo-image";
-import Colors from "constants/Colors";
 import { ImageBackground } from "react-native";
-import { useLayoutEffect } from "react";
-import { Appearance } from "react-native";
 import { useSetFontSize } from "components/fontSizeStore";
-import useFetchSubCategories from "components/useFetchSubCategories";
-import { Alert } from "react-native";
 import {
   CustomToastContainer,
   notifySuccess,
@@ -18,13 +12,50 @@ import {
   notifyInfo,
 } from "components/toast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useLayoutEffect } from "react";
 
 export default function index() {
   const themeStyles = coustomTheme();
   const { fontSize, setLineHeight, setFontSize } = useSetFontSize();
 
-  // Test
-  // test 2
+  //
+
+  // Load colorscheme Mode and Font size stored in Asyncstorage
+  useLayoutEffect(() => {
+    // Check if app has been opened before
+    const initialFetchDone = async () => {
+      const initialTable = await AsyncStorage.getItem("initialFetchDoneTable");
+      const initialSub = await AsyncStorage.getItem("initialFetchDoneSub");
+      console.log("initialTable " + initialTable);
+      console.log("initialSub " + initialSub);
+      if (!initialTable || !initialSub) {
+        notifyInfo(
+          "Daten werden geladen! Es kann einige Minuten dauern, bis du alle Fragen angezeigt bekommst"
+        );
+      }
+    };
+
+    // Get saved fontsettings (Size and Lineheight)
+    const getFontSetting = async () => {
+      const storedFontSize = await AsyncStorage.getItem("fontSize");
+      const storedLineHeight = await AsyncStorage.getItem("lineHeight");
+      if (storedFontSize) {
+        setFontSize(Number(storedFontSize));
+      }
+
+      if (storedLineHeight) {
+        setLineHeight(Number(storedLineHeight));
+      }
+    };
+
+    const initializeSettings = async () => {
+      await getFontSetting();
+    };
+    initialFetchDone();
+    initializeSettings();
+  }, []);
+
+  //
   return (
     <View style={styles.container}>
       <CustomToastContainer />
@@ -149,5 +180,6 @@ const styles = StyleSheet.create({
   categoryContainer: {
     flex: 2,
     marginBottom: 10,
+    backgroundColor: "transparent",
   },
 });
