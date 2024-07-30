@@ -28,7 +28,7 @@ export default function Layout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer initialRouteName='/index'>
+      <Drawer initialRouteName='/index' screenOptions={{   }}>
         <Drawer.Screen
           name='index' // This is the name of the page and must match the url from root
           options={{

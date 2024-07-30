@@ -1,36 +1,27 @@
-// Test
 import { View, Text } from "components/Themed";
-import { StyleSheet, Pressable, Platform, ScrollView } from "react-native";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import { StyleSheet } from "react-native";
+import React, { useLayoutEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { useFetchText } from "components/useFetchText";
 import Colors from "constants/Colors";
 import { Stack } from "expo-router";
-import { AntDesign } from "@expo/vector-icons";
 import { useColorScheme } from "hooks/useColorScheme.web";
-import Markdown from "react-native-markdown-display";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRef } from "react";
 import useFavorites from "components/useFavorites";
 import { coustomTheme } from "components/coustomTheme";
-import { Image } from "expo-image";
-import Checkbox from "expo-checkbox";
 import { useSetFontSize } from "components/fontSizeStore";
-import { MaterialIcons } from "@expo/vector-icons";
-import * as Clipboard from "expo-clipboard";
-import { Picker } from "@react-native-picker/picker";
-import { Modal } from "react-native";
 import { formatTitle } from "components/formatTitle";
 import { CustomToastContainer } from "components/toast";
-import Entypo from "@expo/vector-icons/Entypo";
 import useInitializeSettings from "components/useInitializeSettings";
+import FontSizePickerModal from "components/FontSizePickerModal";
+import HeaderRight from "components/HeaderRightRenderText";
+import HeaderLeft from "components/HeaderLeftRenderText";
+import SingleAnswer from "components/SingleAnswereRenderText";
+import { copySingleAnswer } from "components/copySingleAnswer";
+import { copyMultipleAnswers } from "components/copyMultipleAnswers";
+import MultipleAnswers from "components/MultipleAnswersRenderText";
 
 export default function RenderText() {
-  useLayoutEffect(() => {
-    initialFetchDone();
-    initializeSettings();
-  }, []);
-
   const { id, table, title } = useLocalSearchParams<{
     id: string;
     table: string;
@@ -42,7 +33,6 @@ export default function RenderText() {
     title || ""
   );
 
-  const key = `text-${id}-${table}`;
   const {
     fontSize,
     lineHeight,
@@ -62,6 +52,31 @@ export default function RenderText() {
   const displaySingleAnswer = item?.answer;
   const colorScheme = useColorScheme();
   const themeStyles = coustomTheme();
+  const { initialFetchDone, initializeSettings } = useInitializeSettings(
+    setFontSize,
+    setLineHeight
+  );
+
+  // Clean Timeout
+  const cleanTimeout = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  };
+
+  useLayoutEffect(() => {
+    initialFetchDone();
+    initializeSettings();
+    router.canGoBack() ? setCanBack(true) : setCanBack(false);
+
+    return () => {
+      // Clear timeout when component unmounts
+      cleanTimeout();
+    };
+  }, []);
+
+  // Select Types
   const [isCopiedMultiple, setIsCopiedMultiple] = useState({
     "Sayid al-Khamenei": false,
     "Sayid as-Sistani": false,
@@ -81,171 +96,37 @@ export default function RenderText() {
     { label: "Sayid as-Sistani", value: "Sayid as-Sistani" },
   ];
 
-  const fontSizeOptions = [
-    { label: "Klein", fontSize: 16, lineHeight: 30 },
-    { label: "Mittel", fontSize: 20, lineHeight: 40 },
-    { label: "Groß", fontSize: 25, lineHeight: 40 },
-  ];
-
-  // Clean Timeout
-  const cleanTimeout = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-  };
-
-  useLayoutEffect(() => {
-    return () => {
-      // Clear timeout when component unmounts
-      cleanTimeout();
-    };
-  }, []);
-
-  useLayoutEffect(() => {
-    router.canGoBack() ? setCanBack(true) : setCanBack(false);
-  }, []);
-
+  // Show answer from different Marja 
   const handleCheckboxChange = (value: string) => {
     setMarja((prev) =>
       prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
     );
   };
 
-  // Filter Markdown from copied Text
-  const regex = /(\*\*|\*|######|#####|####|###|##|#)/g;
-
-  const filteredAnswers =
-    marja.length > 0
-      ? displayAnswers.filter(
-          (answer) =>
-            marja.includes(answer.marja) && typeof answer.answer === "string"
-        )
-      : [];
-
-  const copyMultipleAnswers = async (marja: string, text: string) => {
-    if (typeof text !== "string") return;
-    const cleanedText = text.replace(regex, "");
-    await Clipboard.setStringAsync(`${marja}: ${cleanedText}`);
-    setCopiedText(`${marja}: ${cleanedText}`);
-    setIsCopiedMultiple((prev) => ({ ...prev, [marja]: true }));
-
-    // Clear any existing timeout
-    cleanTimeout();
-
-    timeoutRef.current = setTimeout(
-      () => setIsCopiedMultiple((prev) => ({ ...prev, [marja]: false })),
-      1000
-    );
-  };
-
-  const copySingleAnswer = async (text: string) => {
-    if (typeof text !== "string") return;
-    await Clipboard.setStringAsync(text.replace(regex, ""));
-    setCopiedText(text.replace(regex, ""));
-    setIsCopiedSingle(true);
-
-    // Clear any existing timeout
-    cleanTimeout();
-
-    timeoutRef.current = setTimeout(() => setIsCopiedSingle(false), 1000);
-  };
-
-  const { initialFetchDone, initializeSettings } = useInitializeSettings(
-    setFontSize,
-    setLineHeight
-  );
-
   return (
     <View style={styles.container}>
       <CustomToastContainer />
-      <Modal
+      <FontSizePickerModal
         visible={isPickerVisible}
-        transparent={true}
-        animationType='slide'
-        onRequestClose={() => setIsPickerVisible(false)}
-      >
-        <View
-          style={[
-            styles.modalContainer,
-            themeStyles.modalQuestionBlurredBackground,
-          ]}
-        >
-          <View style={[styles.pickerContainer, themeStyles.modalQuestion]}>
-            <Picker
-              selectedValue={pickerValue}
-              onValueChange={(itemValue) => {
-                setPickerValue(itemValue);
-
-                // Zustand Store
-                const selectedOption = fontSizeOptions.find(
-                  (option) => option.label === itemValue
-                );
-                if (selectedOption) {
-                  setFontSize(selectedOption.fontSize);
-                  setLineHeight(selectedOption.lineHeight);
-                }
-
-                // Dismiss Picker
-                setIsPickerVisible(false);
-              }}
-            >
-              {fontSizeOptions.map((option) => (
-                <Picker.Item
-                  key={option.label}
-                  label={option.label}
-                  value={option.label}
-                  color={
-                    colorScheme == "light"
-                      ? Colors.light.modalQuestionText
-                      : Colors.dark.modalQuestionText
-                  }
-                />
-              ))}
-            </Picker>
-          </View>
-        </View>
-      </Modal>
+        onClose={() => setIsPickerVisible(false)}
+        pickerValue={pickerValue}
+        setPickerValue={setPickerValue}
+        setFontSize={setFontSize}
+        setLineHeight={setLineHeight}
+      />
       <Stack.Screen
         options={{
           headerRight: () => (
-            <View style={styles.buttonsHeaderContainer}>
-              <MaterialCommunityIcons
-                name='format-letter-case'
-                size={26}
-                style={themeStyles.fontSizeIcon}
-                onPress={() => setIsPickerVisible(true)}
-              />
-              <AntDesign
-                name={isInFavorites(id, table) ? "star" : "staro"}
-                size={24}
-                style={themeStyles.favoriteIcon}
-                onPress={() => toggleFavorite(id, table, title)}
-              />
-            </View>
+            <HeaderRight
+              isInFavorites={isInFavorites}
+              id={id}
+              table={table}
+              title={title}
+              toggleFavorite={toggleFavorite}
+              setIsPickerVisible={setIsPickerVisible}
+            />
           ),
-          headerLeft: () =>
-            canBack ? (
-              <View style={styles.canBack}>
-                <Pressable onPress={router.back}>
-                  <Entypo
-                    name='chevron-left'
-                    size={24}
-                    color={colorScheme === "light" ? "black" : "white"}
-                  />
-                </Pressable>
-              </View>
-            ) : (
-              <View style={styles.canBack}>
-                <Pressable onPress={() => router.push("/")}>
-                  <Entypo
-                    name='home'
-                    size={24}
-                    color={colorScheme === "light" ? "black" : "white"}
-                  />
-                </Pressable>
-              </View>
-            ),
+          headerLeft: () => <HeaderLeft canBack={canBack} />,
           headerTitle: item ? formatTitle(item.title) : "",
         }}
       />
@@ -254,228 +135,39 @@ export default function RenderText() {
           <Text style={styles.errorText}>{fetchError}</Text>
         </View>
       ) : displaySingleAnswer ? (
-        <ScrollView
-          style={styles.answersScrollViewStyles}
-          contentContainerStyle={styles.answersScrollViewContent}
-        >
-          <View style={styles.innerContainerScrollView}>
-            <View
-              style={[styles.questionContainer, themeStyles.containerContrast]}
-            >
-              <Text
-                style={[
-                  styles.questionText,
-                  { lineHeight: lineHeight, fontSize: fontSize },
-                ]}
-              >
-                {displayQuestion}
-              </Text>
-            </View>
-            <View style={styles.answersContainer}>
-              <View
-                style={[styles.singleAnswers, themeStyles.containerContrast]}
-              >
-                <View style={styles.copyContainerSingle}>
-                  {isCopiedSingle ? (
-                    <View style={styles.copyDoneContainer}>
-                      <MaterialIcons
-                        name='done'
-                        size={24}
-                        color={colorScheme == "dark" ? "white" : "black"}
-                      />
-                      <Text style={styles.copyDoneText}>Text Kopiert!</Text>
-                    </View>
-                  ) : (
-                    <Pressable
-                      onPress={() => copySingleAnswer(displaySingleAnswer)}
-                    >
-                      <AntDesign
-                        name='copy1'
-                        size={24}
-                        color={colorScheme == "dark" ? "white" : "black"}
-                      />
-                    </Pressable>
-                  )}
-                </View>
-                <Markdown
-                  style={{
-                    body: {
-                      ...themeStyles.markdownText,
-                      fontSize: fontSize,
-                      lineHeight: lineHeight,
-                      fontFamily:
-                        Platform.OS === "ios" ? "Helvetica" : "Roboto",
-                    },
-                    heading1: {
-                      fontSize: fontSize + 5,
-                    },
-                    heading2: {
-                      ...themeStyles.markdownText,
-                      fontSize: fontSize + 10,
-                      textAlign: "center",
-                    },
-                    heading3: {
-                      ...themeStyles.markdownText,
-                      fontSize: fontSize + 10,
-                      fontWeight: "bold",
-                    },
-                    heading4: {
-                      ...themeStyles.markdownText,
-                      fontSize: fontSize + 10,
-                      textAlign: "center",
-                      fontWeight: "bold",
-                    },
-                    heading5: {
-                      ...themeStyles.markdownText,
-                      fontSize: fontSize + 10,
-                    },
-                    heading6: {
-                      ...themeStyles.markdownText,
-                      fontSize: fontSize,
-                      textAlign: "center",
-                    },
-                  }}
-                >
-                  {displaySingleAnswer}
-                </Markdown>
-              </View>
-            </View>
-          </View>
-        </ScrollView>
+        <SingleAnswer
+          themeStyles={themeStyles}
+          displayQuestion={displayQuestion}
+          lineHeight={lineHeight}
+          fontSize={fontSize}
+          displaySingleAnswer={displaySingleAnswer}
+          isCopiedSingle={isCopiedSingle}
+          copySingleAnswer={copySingleAnswer}
+          setCopiedText={setCopiedText}
+          setIsCopiedSingle={setIsCopiedSingle}
+          cleanTimeout={cleanTimeout}
+          timeoutRef={timeoutRef}
+          colorScheme={colorScheme}
+        />
       ) : (
-        <ScrollView
-          style={styles.answersScrollViewStyles}
-          contentContainerStyle={styles.answersScrollViewContent}
-        >
-          <View style={styles.innerContainerScrollView}>
-            <View
-              style={[styles.questionContainer, themeStyles.containerContrast]}
-            >
-              <Text
-                style={[
-                  styles.questionText,
-                  { lineHeight: lineHeight, fontSize: fontSize },
-                ]}
-              >
-                {displayQuestion}
-              </Text>
-            </View>
-            <View style={styles.marjaChoiceContainer}>
-              {marjaOptions.map((option) => (
-                <View key={option.value} style={styles.marjaChoice}>
-                  <View style={styles.checkboxContainer}>
-                    <Checkbox
-                      style={styles.marjaCheckbox}
-                      value={marja.includes(option.value)}
-                      onValueChange={() => handleCheckboxChange(option.value)}
-                    />
-                  </View>
-                  <Text style={styles.marjaLable}>{option.label}</Text>
-                </View>
-              ))}
-            </View>
-            <View style={styles.answersContainer}>
-              {filteredAnswers.map((answer, index) => (
-                <View
-                  key={index}
-                  style={[styles.answers, themeStyles.containerContrast]}
-                >
-                  <View style={styles.copyContainer}>
-                    {isCopiedMultiple[answer.marja] ? (
-                      <View style={styles.copyDoneContainer}>
-                        <MaterialIcons
-                          name='done'
-                          size={24}
-                          color={colorScheme == "dark" ? "white" : "black"}
-                        />
-                        <Text style={styles.copyDoneText}>Text Kopiert!</Text>
-                      </View>
-                    ) : (
-                      <Pressable
-                        onPress={() =>
-                          copyMultipleAnswers(answer.marja, answer.answer)
-                        }
-                      >
-                        <AntDesign
-                          name='copy1'
-                          size={24}
-                          color={colorScheme == "dark" ? "white" : "black"}
-                        />
-                      </Pressable>
-                    )}
-                  </View>
-                  <View
-                    style={[
-                      styles.headerContainer,
-                      themeStyles.containerContrast,
-                    ]}
-                  >
-                    <View style={styles.headerImage}>
-                      <Image
-                        source={images[answer.marja]}
-                        style={styles.image}
-                        contentFit='cover'
-                      />
-                    </View>
-                    <View
-                      style={[styles.headerText, themeStyles.containerContrast]}
-                    >
-                      <Text style={styles.marjaText}>
-                        {
-                          marjaOptions.find(
-                            (option) => option.value === answer.marja
-                          )?.label
-                        }
-                      </Text>
-                    </View>
-                  </View>
-                  <Markdown
-                    style={{
-                      body: {
-                        ...themeStyles.markdownText,
-
-                        fontSize: fontSize,
-                        lineHeight: lineHeight,
-                        fontFamily:
-                          Platform.OS === "ios" ? "Helvetica" : "Roboto",
-                      },
-                      heading1: {
-                        fontSize: fontSize + 5,
-                      },
-                      heading2: {
-                        ...themeStyles.markdownText,
-                        fontSize: fontSize + 10,
-                        textAlign: "center",
-                      },
-                      heading3: {
-                        ...themeStyles.markdownText,
-                        fontSize: fontSize + 10,
-                        fontWeight: "bold",
-                      },
-                      heading4: {
-                        ...themeStyles.markdownText,
-                        fontSize: fontSize + 10,
-                        textAlign: "center",
-                        fontWeight: "bold",
-                      },
-                      heading5: {
-                        ...themeStyles.markdownText,
-                        fontSize: fontSize + 10,
-                      },
-                      heading6: {
-                        ...themeStyles.markdownText,
-                        fontSize: fontSize,
-                        textAlign: "center",
-                      },
-                    }}
-                  >
-                    {answer.answer}
-                  </Markdown>
-                </View>
-              ))}
-            </View>
-          </View>
-        </ScrollView>
+        <MultipleAnswers
+          themeStyles={themeStyles}
+          displayQuestion={displayQuestion}
+          lineHeight={lineHeight}
+          fontSize={fontSize}
+          marjaOptions={marjaOptions}
+          marja={marja}
+          displayAnswers={displayAnswers}
+          handleCheckboxChange={handleCheckboxChange}
+          isCopiedMultiple={isCopiedMultiple}
+          copyMultipleAnswers={copyMultipleAnswers}
+          setCopiedText={setCopiedText}
+          setIsCopiedMultiple={setIsCopiedMultiple}
+          cleanTimeout={cleanTimeout}
+          timeoutRef={timeoutRef}
+          colorScheme={colorScheme}
+          images={images}
+        />
       )}
     </View>
   );
@@ -484,170 +176,6 @@ export default function RenderText() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  buttonsHeaderContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 15,
-    backgroundColor: "transparent",
-    paddingRight: 15,
-  },
-  canBack: {
-    backgroundColor: "transparent",
-    marginLeft: 15,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  pickerContainer: {
-    width: 300,
-    backgroundColor: "white",
-    borderRadius: 10,
-    padding: 20,
-  },
-  FlashContainer: {
-    flex: 1,
-    marginTop: 10,
-    marginBottom: 30,
-  },
-  answersScrollViewStyles: {
-    flex: 1,
-    marginTop: 10,
-    marginBottom: 10,
-  },
-
-  answersScrollViewContent: {
-    flexDirection: "column",
-    alignItems: "center",
-  },
-
-  innerContainerScrollView: {
-    flexDirection: "column",
-    width: "95%",
-    maxWidth: 700,
-    backgroundColor: "transparent",
-  },
-
-  questionContainer: {
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-  },
-
-  questionText: {
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  singleAnswers: {
-    height: "auto",
-    width: "100%",
-    marginTop: 20,
-    marginBottom: 20,
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-    paddingTop: 5,
-    borderWidth: 1,
-    borderRadius: 10,
-  },
-  answersContainer: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  answers: {
-    width: "100%",
-    height: "auto",
-    marginBottom: 20,
-    padding: 20,
-    borderWidth: 1,
-    borderRadius: 10,
-  },
-  copyContainerSingle: {
-    marginTop: 10,
-    backgroundColor: "transparent",
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "flex-start",
-  },
-  copyContainer: {
-    backgroundColor: "transparent",
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "flex-start",
-  },
-  copyDoneSingleContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    backgroundColor: "transparent",
-    marginTop: 10,
-  },
-  copyDoneContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    backgroundColor: "transparent",
-  },
-  copyDoneText: {
-    marginLeft: 5,
-  },
-  headerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingBottom: 10,
-    borderBottomWidth: 2,
-  },
-  marjaChoiceContainer: {
-    flexDirection: "row",
-    margin: 20,
-    justifyContent: "space-between",
-  },
-  marjaChoice: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  checkboxContainer: {},
-  marjaCheckbox: {
-    width: 28,
-    height: 28,
-  },
-  marjaLable: {
-    fontSize: 14,
-    marginTop: 5,
-    paddingLeft: 5,
-    fontWeight: "bold",
-  },
-  headerImage: {
-    backgroundColor: "transparent",
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginLeft: 10,
-    borderRadius: 10,
-  },
-  headerText: {},
-  marjaText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginRight: 20,
-  },
-  bookmark: {
-    paddingTop: 7,
-  },
-  toTopButton: {
-    position: "absolute",
-    top: 300,
-    right: 10,
-    zIndex: 1,
-  },
-  index: {
-    marginTop: 10,
-    textAlign: "center",
   },
   renderError: {
     flex: 1,
