@@ -1,9 +1,14 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Drawer } from "expo-router/drawer";
 import { useColorScheme } from "hooks/useColorScheme.web";
-import useColorSchemeStore from "components/colorStore"; // Import the store
-import { createScreenOptions } from "components/headerOptions"; //
+import useColorSchemeStore from "components/colorStore";
+import { createScreenOptions } from "components/headerOptions";
 import { Pressable, TextStyle } from "react-native";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
 
 export default function Layout() {
   const colorScheme = useColorScheme();
@@ -38,10 +43,9 @@ export default function Layout() {
             drawerLabel: () => null,
             title: "",
             drawerItemStyle: { height: 0 }, // Hide the item by setting its height to 0
-            ...headerWithoutButton(colorScheme)
+            ...headerWithoutButton(colorScheme),
           }}
         />
-
         <Drawer.Screen
           name='news' // This is the name of the page and must match the url from root
           options={{
@@ -55,7 +59,7 @@ export default function Layout() {
           options={{
             drawerLabel: "Frage stellen",
             title: "Eine Frage stellen",
-            ...headerWithoutButton(colorScheme)
+            ...headerWithoutButton(colorScheme),
           }}
         />
         <Drawer.Screen

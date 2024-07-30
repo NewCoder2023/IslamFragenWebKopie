@@ -5,60 +5,26 @@ import { coustomTheme } from "components/coustomTheme";
 import { Image } from "expo-image";
 import { ImageBackground } from "react-native";
 import { useSetFontSize } from "components/fontSizeStore";
-import {
-  CustomToastContainer,
-  notifySuccess,
-  notifyError,
-  notifyInfo,
-} from "components/toast";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CustomToastContainer } from "components/toast";
 import { useLayoutEffect } from "react";
+import useInitializeSettings from "components/useInitializeSettings";
 
 export default function index() {
   const themeStyles = coustomTheme();
   const { fontSize, setLineHeight, setFontSize } = useSetFontSize();
+  const { initialFetchDone, initializeSettings } = useInitializeSettings(
+    setFontSize,
+    setLineHeight
+  );
 
-  //
-
-  // Load colorscheme Mode and Font size stored in Asyncstorage
   useLayoutEffect(() => {
-    // Check if app has been opened before
-    const initialFetchDone = async () => {
-      const initialTable = await AsyncStorage.getItem("initialFetchDoneTable");
-      const initialSub = await AsyncStorage.getItem("initialFetchDoneSub");
-      console.log("initialTable " + initialTable);
-      console.log("initialSub " + initialSub);
-      if (!initialTable || !initialSub) {
-        notifyInfo(
-          "Daten werden geladen! Es kann einige Minuten dauern, bis du alle Fragen angezeigt bekommst"
-        );
-      }
-    };
-
-    // Get saved fontsettings (Size and Lineheight)
-    const getFontSetting = async () => {
-      const storedFontSize = await AsyncStorage.getItem("fontSize");
-      const storedLineHeight = await AsyncStorage.getItem("lineHeight");
-      if (storedFontSize) {
-        setFontSize(Number(storedFontSize));
-      }
-
-      if (storedLineHeight) {
-        setLineHeight(Number(storedLineHeight));
-      }
-    };
-
-    const initializeSettings = async () => {
-      await getFontSetting();
-    };
     initialFetchDone();
     initializeSettings();
   }, []);
 
-  //
   return (
     <View style={styles.container}>
-      <CustomToastContainer />
+      <CustomToastContainer width={800} />
       <View style={[styles.headerContainer, themeStyles.indexBorderDash]}>
         <View style={[styles.header, themeStyles.backgroundIndex]}>
           {/* <ImageBackground
@@ -95,7 +61,6 @@ export default function index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "transparent",
   },
   headerContainer: {
     flex: 1,
@@ -140,30 +105,9 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 40,
   },
-
   headerImage: {
     width: "100%", // Take full width of the container
     height: "100%",
-  },
-  searchContainer: {
-    width: "100%",
-    position: "absolute",
-    top: "70%",
-    backgroundColor: "transparent",
-  },
-  search: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    alignSelf: "center",
-    marginTop: 20,
-    paddingRight: 15,
-    borderWidth: 2,
-    borderRadius: 30,
-    backgroundColor: "blue",
-  },
-  searchIcon: {
-    paddingLeft: 12,
   },
   border: {
     fontSize: 25,
@@ -172,11 +116,6 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     alignSelf: "center",
   },
-  seachText: {
-    paddingLeft: 5,
-    fontSize: 16,
-  },
-  searchField: {},
   categoryContainer: {
     flex: 2,
     marginBottom: 10,

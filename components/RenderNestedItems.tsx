@@ -1,15 +1,14 @@
-import Colors from "constants/Colors";
 import { Text, View } from "components/Themed";
-import { FlatList, Pressable, StyleSheet } from "react-native";
-import React, { useEffect } from "react";
+import { Pressable, StyleSheet } from "react-native";
+import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import { useColorScheme } from "./useColorScheme.web";
+import { useColorScheme } from "hooks/useColorScheme.web";
 import { FlashList } from "@shopify/flash-list";
-import { Appearance } from "react-native";
 import { coustomTheme } from "./coustomTheme";
 import { ActivityIndicator } from "react-native";
 import { formatTitle } from "components/formatTitle";
+import { encodeTitle } from "components/encodeTitle";
 
 interface NestedItem {
   id: number;
@@ -28,20 +27,8 @@ const RenderNestedItems: React.FC<RenderNestedItemsProps> = ({
   fetchError,
   isFetchinTable,
 }) => {
-  const encodeTitle = (title: string) => {
-    const cleanedTitle = title.trim().replace(/\n/g, "");
-    return encodeURIComponent(cleanedTitle)
-      .replace(/\(/g, "%28")
-      .replace(/\)/g, "%29");
-  };
-
   const colorScheme = useColorScheme();
   const themeStyles = coustomTheme();
-
-  console.log("Items:", items);
-  console.log("Fetch Error:", fetchError);
-  console.log("Is Fetching Table:", isFetchinTable);
-  
 
   return (
     <View style={styles.container}>
@@ -99,7 +86,7 @@ const RenderNestedItems: React.FC<RenderNestedItemsProps> = ({
                       <Feather
                         name='arrow-right-circle'
                         size={25}
-                        color={colorScheme == "light" ? "black" : "white"}
+                        color={colorScheme === "light" ? "black" : "white"}
                       />
                     </View>
                   </Pressable>
@@ -118,7 +105,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 5,
     marginBottom: 10,
-   
   },
   itemsContainer: {
     flex: 1,

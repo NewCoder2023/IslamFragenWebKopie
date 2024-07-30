@@ -39,21 +39,21 @@ const notifyInfo = (message: string) =>
     theme: "dark",
   });
 
-const CustomToastContainer = () => (
+const CustomToastContainer = ({ width = 300 }) => (
   <>
-  <ToastContainer
-    position='top-left'
-    autoClose={5000}
-    hideProgressBar={false}
-    newestOnTop={false}
-    closeOnClick
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover
-    theme='light'
-    style={{marginTop: 80, width: "80%", maxWidth: 300}}
-  />
+    <ToastContainer
+      position='top-left'
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme='light'
+      style={{ marginTop: 80, width: "80%", maxWidth: width }}
+    />
   </>
 );
 

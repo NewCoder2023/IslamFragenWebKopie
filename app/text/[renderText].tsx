@@ -23,8 +23,14 @@ import { Modal } from "react-native";
 import { formatTitle } from "components/formatTitle";
 import { CustomToastContainer } from "components/toast";
 import Entypo from "@expo/vector-icons/Entypo";
+import useInitializeSettings from "components/useInitializeSettings";
 
 export default function RenderText() {
+  useLayoutEffect(() => {
+    initialFetchDone();
+    initializeSettings();
+  }, []);
+
   const { id, table, title } = useLocalSearchParams<{
     id: string;
     table: string;
@@ -37,8 +43,6 @@ export default function RenderText() {
   );
 
   const key = `text-${id}-${table}`;
-  const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
-  const CONTENT_OFFSET_THRESHOLD = 300;
   const {
     fontSize,
     lineHeight,
@@ -146,6 +150,11 @@ export default function RenderText() {
 
     timeoutRef.current = setTimeout(() => setIsCopiedSingle(false), 1000);
   };
+
+  const { initialFetchDone, initializeSettings } = useInitializeSettings(
+    setFontSize,
+    setLineHeight
+  );
 
   return (
     <View style={styles.container}>

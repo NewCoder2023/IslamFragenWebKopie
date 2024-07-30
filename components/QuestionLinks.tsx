@@ -1,16 +1,13 @@
 import React from "react";
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet } from "react-native";
 import { Text, View } from "./Themed";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
-import Colors from "constants/Colors";
 import { Image } from "expo-image";
-import { useColorScheme } from "react-native";
 import { coustomTheme } from "./coustomTheme";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function QuestionLinks() {
-  const colorScheme = useColorScheme();
   const themeStyles = coustomTheme();
 
   const categoriesLeft = [
@@ -150,7 +147,6 @@ const styles = StyleSheet.create({
     width: "50%",
     backgroundColor: "transparent",
     alignItems: "center",
-  
   },
   rightElements: {
     height: "100%",
@@ -163,8 +159,8 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexGrow: 1,
     width: "70%",
-    maxWidth: 350, 
-    minWidth: 150, 
+    maxWidth: 350,
+    minWidth: 150,
     height: "100%",
     minHeight: 130,
     margin: 15,
@@ -176,7 +172,8 @@ const styles = StyleSheet.create({
   },
 
   elementIcon: {
-    width: "25%",
+    width: "50%",
+    maxWidth: 90,
     height: "auto",
     aspectRatio: 1,
     alignSelf: "center",

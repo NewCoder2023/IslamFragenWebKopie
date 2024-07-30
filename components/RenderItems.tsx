@@ -1,14 +1,14 @@
 import { Text, View } from "components/Themed";
 import { Pressable, StyleSheet } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { useColorScheme } from "hooks/useColorScheme.web";
 import { FlashList } from "@shopify/flash-list";
-import { Appearance } from "react-native";
 import { coustomTheme } from "./coustomTheme";
 import { ActivityIndicator } from "react-native";
 import { formatTitle } from "components/formatTitle";
+import { encodeTitle } from "components/encodeTitle";
 interface Item {
   id: number;
   title: string;
@@ -27,20 +27,15 @@ export default function RenderItems({
   table,
   isFetching,
 }: RenderItemsProps) {
-  const encodeTitle = (title: string) => {
-    const cleanedTitle = title.trim().replace(/\n/g, "");
-    return encodeURIComponent(cleanedTitle)
-      .replace(/\(/g, "%28")
-      .replace(/\)/g, "%29");
-  };
+  // const encodeTitle = (title: string) => {
+  //   const cleanedTitle = title.trim().replace(/\n/g, "");
+  //   return encodeURIComponent(cleanedTitle)
+  //     .replace(/\(/g, "%28")
+  //     .replace(/\)/g, "%29");
+  // };
 
   const colorScheme = useColorScheme();
   const themeStyles = coustomTheme();
-  const appColor = Appearance.getColorScheme();
-  console.log(items);
-
-  console.log("Items:", items);
-  console.log("Fetch Error2:", fetchError);
 
   return (
     <View style={styles.container}>
@@ -98,7 +93,7 @@ export default function RenderItems({
                       <Feather
                         name='arrow-right-circle'
                         size={25}
-                        color={colorScheme == "light" ? "black" : "white"}
+                        color={colorScheme === "light" ? "black" : "white"}
                       />
                     </View>
                   </Pressable>
@@ -117,7 +112,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 5,
     marginBottom: 5,
-    
   },
   itemsContainer: {
     flex: 1,
@@ -133,11 +127,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 15,
   },
-  noItemsContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+
   FlashListItems: {
     paddingTop: 15,
   },
