@@ -148,6 +148,6 @@ const styles = StyleSheet.create({
   searchField: {},
   categoryContainer: {
     flex: 2,
-    marginBottom: 20,
+    marginBottom: 10,
   },
 });
