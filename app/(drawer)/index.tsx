@@ -2,7 +2,7 @@ import { Pressable, StyleSheet } from "react-native";
 import { View, Text } from "components/Themed";
 import QuestionLinks from "components/QuestionLinks";
 import { coustomTheme } from "components/coustomTheme";
-import { useColorScheme } from "hooks/useColorScheme.web";
+
 import { Image } from "expo-image";
 import Colors from "constants/Colors";
 import { ImageBackground } from "react-native";
@@ -17,9 +17,9 @@ import {
   notifyError,
   notifyInfo,
 } from "components/toast";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function index() {
-  const colorscheme = useColorScheme();
   const themeStyles = coustomTheme();
   const { fontSize, setLineHeight, setFontSize } = useSetFontSize();
 
@@ -27,7 +27,7 @@ export default function index() {
   // test 2
   return (
     <View style={styles.container}>
-     <CustomToastContainer />
+      <CustomToastContainer />
       <View style={[styles.headerContainer, themeStyles.indexBorderDash]}>
         <View style={[styles.header, themeStyles.backgroundIndex]}>
           {/* <ImageBackground

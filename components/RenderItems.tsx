@@ -78,7 +78,7 @@ export default function RenderItems({
                 <Link
                   style={styles.FlashListItems}
                   href={{
-                    pathname: `text/${encodeTitle(item.title)}`,
+                    pathname: `text/[renderText]`,
                     params: {
                       id: item.id,
                       table: table,

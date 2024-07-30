@@ -22,7 +22,9 @@ export function useThemeColor(
   props: { light?: string; dark?: string },
   colorName: keyof typeof Colors.light & keyof typeof Colors.dark
 ) {
-  const theme = useColorScheme() ?? "light";
+  const colorScheme = useColorScheme();
+  const theme = colorScheme ?? "light"; // Remove the second call to useColorScheme
+
   const colorFromProps = props[theme];
 
   if (colorFromProps) {
@@ -43,7 +45,7 @@ export function View(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const backgroundColor = useThemeColor(
     { light: lightColor, dark: darkColor },
-    
+
     "background"
   );
 

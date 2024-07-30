@@ -5,8 +5,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Pressable } from "react-native";
 import { router } from "expo-router";
 import { useRouter } from "expo-router";
+import Feather from "@expo/vector-icons/Feather";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useColorScheme } from "hooks/useColorScheme.web";
 
 export default function Layout() {
+  const colorScheme = useColorScheme();
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer initialRouteName='/index'>
@@ -15,6 +19,16 @@ export default function Layout() {
           options={{
             drawerLabel: "Home",
             title: "Islam-Fragen",
+            headerRight: () =>
+              colorScheme === "light" ? (
+                <Pressable>
+                  <FontAwesome name='moon-o' size={24} color='black' />
+                </Pressable>
+              ) : (
+                <Pressable>
+                  <Feather name='sun' size={24} color='black' />
+                </Pressable>
+              ),
           }}
         />
         <Drawer.Screen
