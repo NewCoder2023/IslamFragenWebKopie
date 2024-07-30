@@ -27,7 +27,8 @@ export default function RenderFavorites({ items }) {
       style={styles.FlashListItems}
       key={`${item.table}-${item.id}`}
       href={{
-        pathname: `/(text)/${encodeTitle(item.title)}`,
+        pathname: `/text/[renderText]`,
+        // ${encodeTitle(item.title)}
         params: {
           id: item.id,
           table: item.table,
