@@ -69,6 +69,7 @@ export default function RenderText() {
   };
 
   useLayoutEffect(() => {
+
    // initialFetchDone();
     initializeSettings();
     router.canGoBack() ? setCanBack(true) : setCanBack(false);
