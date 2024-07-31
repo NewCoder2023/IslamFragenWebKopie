@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useFetchSubCategories from "./useFetchSubCategories";
 import { useFetchTableNames } from "./useFetchTableNames";
+import { supabase } from "@/utils/supabase";
 interface Item {
   id: number;
   title: string;
@@ -19,7 +20,7 @@ export const useFetchText = (table: string, title: string) => {
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const { subCategories, refetch } = useFetchSubCategories();
-console.log(tableNames)
+
   const fetchData = async () => {
     try {
       // Make sure tableNames available in case text is opend via link directly
@@ -57,10 +58,9 @@ console.log(tableNames)
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     fetchData();
   }, [table, title]);
 
   return { item, fetchError, isFetching };
 };
-
