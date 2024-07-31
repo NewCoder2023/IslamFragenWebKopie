@@ -1,11 +1,9 @@
-import { View, Text } from "components/Themed";
-import { StyleSheet } from "react-native";
-import React, { useEffect, useLayoutEffect } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import React from "react";
 import { useLocalSearchParams } from "expo-router";
 import RenderNestedItems from "components/RenderNestedItems";
 import { Stack } from "expo-router";
-import { useFetchTableNames } from "components/useFetchTableNames";
-import { useRefetchTableStore } from "components/refetchTableStore";
+import { useFetchCategories } from "components/useFetchCategories";
 
 export default function RenderNestedCategories() {
   const { category } = useLocalSearchParams<{ category: string }>();
@@ -16,24 +14,8 @@ export default function RenderNestedCategories() {
       .replace(/\(/g, "%28")
       .replace(/\)/g, "%29");
   };
-  const { tableNames, fetchError, isFetchinTable, fetchTableNames } =
-    useFetchTableNames();
 
-    console.log("tableNames" + tableNames)
-
-  const { hasRefetched, setRefetch } = useRefetchTableStore();
-
-  console.log("hasRefetched" + hasRefetched)
-
-  useLayoutEffect(() => {
-    const refetchTable = async () => {
-      if (category && !hasRefetched) {
-        await fetchTableNames();
-        setRefetch();
-      }
-    };
-    refetchTable();
-  }, []);
+  const { data: tableNames, error, isLoading } = useFetchCategories();
 
   if (!category) {
     return (
@@ -42,30 +24,36 @@ export default function RenderNestedCategories() {
           items={[]}
           fetchError='Invalid category'
           table=''
-          isFetchinTable={isFetchinTable}
+          isFetchinTable={isLoading}
         />
       </View>
     );
   }
 
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  if (error) {
+    return <Text>Error loading data: {error.message}</Text>;
+  }
+
   // Filter and map the category items
   const categoryItems = tableNames
     .filter((item) => item.category === category)
-    .flatMap((item) =>
-      item.tableNames.split(", ").map((tableName, index) => ({
-        id: index,
-        title: tableName.trim(),
-      }))
-    );
+    .map((item, index) => ({
+      id: index,
+      title: item.tableName.trim(),
+    }));
 
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerTitle: category }} />
       <RenderNestedItems
         items={categoryItems}
-        fetchError={fetchError}
+        fetchError={error ? error.message : null}
         table={encodeTable(category)}
-        isFetchinTable={isFetchinTable}
+        isFetchinTable={isLoading}
       />
     </View>
   );
