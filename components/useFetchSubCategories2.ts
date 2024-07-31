@@ -59,17 +59,17 @@ export default function useFetchSubCategories() {
           .channel(tableName)
           .on("postgres_changes", { event: "INSERT", schema: "public", table: tableName }, () => {
             Toast.show({ type: "info", text1: "Die Fragen und Antworten wurden aktualisiert!" });
-            queryClient.invalidateQueries(["subCategories"]);
+            queryClient.invalidateQueries({ queryKey: ["subCategories"] });
             router.navigate("/");
           })
           .on("postgres_changes", { event: "UPDATE", schema: "public", table: tableName }, () => {
             Toast.show({ type: "info", text1: "Die Fragen und Antworten wurden aktualisiert!" });
-            queryClient.invalidateQueries(["subCategories"]);
+            queryClient.invalidateQueries({ queryKey: ["subCategories"] });
             router.navigate("/");
           })
           .on("postgres_changes", { event: "DELETE", schema: "public", table: tableName }, () => {
             Toast.show({ type: "info", text1: "Die Fragen und Antworten wurden aktualisiert!" });
-            queryClient.invalidateQueries(["subCategories"]);
+            queryClient.invalidateQueries({ queryKey: ["subCategories"] });
             router.navigate("/");
           })
           .subscribe();
@@ -90,12 +90,13 @@ export default function useFetchSubCategories() {
         }
       };
     }
+    console.log(subCategories)
   }, [tableNames, subscribeToTable]);
 
   return {
     fetchError,
     subCategories,
-    refetch: () => queryClient.invalidateQueries(["subCategories"]),
+    refetch: () => queryClient.invalidateQueries({ queryKey: ["subCategories"] }),
     isFetchingSub: isTableNamesLoading,
     tableNamesError,
   };

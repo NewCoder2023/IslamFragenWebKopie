@@ -4,13 +4,12 @@ import React, { useLayoutEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
 import RenderItems from "components/RenderItems";
 import { Stack } from "expo-router";
-import useFetchSubCategories from "components/useFetchSubCategories";
+import useFetchSubCategories from "components/useFetchSubCategories2";
 import { useRefetchSubeStore } from "components/refetchSubStore";
 
 export default function RenderCategory() {
   const { subCategory } = useLocalSearchParams<{ subCategory: string }>();
-  const { fetchError, subCategories, refetch, isFetchingSub } =
-    useFetchSubCategories();
+  const { fetchError, subCategories, refetch, isFetchingSub } = useFetchSubCategories();
   const { fetchStatus, setRefetch, hasRefetched } = useRefetchSubeStore();
 
   const encodeTable = (title: string) => {
@@ -23,13 +22,13 @@ export default function RenderCategory() {
   // Use effect hook to refetch data when subCategory changes
   useLayoutEffect(() => {
     if (subCategory && !hasRefetched(subCategory)) {
-      refetch(subCategory);
+      refetch();
       setRefetch(subCategory);
     }
   }, [subCategory, refetch, setRefetch, hasRefetched]);
 
   // Determine matched table and filtered items based on subCategory
-  const matchedTable = subCategories.find(
+  const matchedTable = subCategories?.find(
     (table) => table.tableName === subCategory
   );
   const filteredItems = matchedTable ? matchedTable.questions : [];

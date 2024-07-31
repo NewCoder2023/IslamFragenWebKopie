@@ -2,7 +2,7 @@ import { View, Text } from "components/Themed";
 import { StyleSheet } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
-import { useFetchText } from "components/useFetchText";
+//import { useFetchText } from "components/useFetchText";
 import Colors from "constants/Colors";
 import { Stack } from "expo-router";
 import { useColorScheme } from "hooks/useColorScheme.web";
@@ -22,6 +22,7 @@ import { copyMultipleAnswers } from "components/copyMultipleAnswers";
 import MultipleAnswers from "components/MultipleAnswersRenderText";
 // import { useFetchTableNames } from "components/useFetchTableNames";
 // import useFetchSubCategories from "components/useFetchSubCategories";
+import { useFetchText } from "components/useFetchText2";
 
 export default function RenderText() {
   const { id, table, title } = useLocalSearchParams<{
@@ -68,7 +69,7 @@ export default function RenderText() {
   };
 
   useLayoutEffect(() => {
-    initialFetchDone();
+   // initialFetchDone();
     initializeSettings();
     router.canGoBack() ? setCanBack(true) : setCanBack(false);
 
