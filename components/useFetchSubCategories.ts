@@ -2,8 +2,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "utils/supabase";
 import { useEffect, useCallback } from "react";
 import { useFetchCategories } from "components/useFetchCategories";
-import Toast from "react-native-toast-message";
 import { router } from "expo-router";
+import { notifySuccess, notifyError, notifyInfo } from "components/toast";
 
 interface SubCategoryItem {
   id: number;
@@ -72,10 +72,7 @@ export default function useFetchSubCategories() {
             "postgres_changes",
             { event: "INSERT", schema: "public", table: tableName },
             () => {
-              Toast.show({
-                type: "info",
-                text1: "Die Fragen und Antworten wurden aktualisiert!",
-              });
+              notifyInfo("Die Fragen und Antworten wurden aktualisiert!");
               queryClient.invalidateQueries({ queryKey: ["subCategories"] });
               router.navigate("/");
             }
@@ -84,10 +81,7 @@ export default function useFetchSubCategories() {
             "postgres_changes",
             { event: "UPDATE", schema: "public", table: tableName },
             () => {
-              Toast.show({
-                type: "info",
-                text1: "Die Fragen und Antworten wurden aktualisiert!",
-              });
+              notifyInfo("Die Fragen und Antworten wurden aktualisiert!");
               queryClient.invalidateQueries({ queryKey: ["subCategories"] });
               router.navigate("/");
             }
@@ -96,10 +90,7 @@ export default function useFetchSubCategories() {
             "postgres_changes",
             { event: "DELETE", schema: "public", table: tableName },
             () => {
-              Toast.show({
-                type: "info",
-                text1: "Die Fragen und Antworten wurden aktualisiert!",
-              });
+              notifyInfo("Die Fragen und Antworten wurden aktualisiert!");
               queryClient.invalidateQueries({ queryKey: ["subCategories"] });
               router.navigate("/");
             }

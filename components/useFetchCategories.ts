@@ -3,6 +3,7 @@ import { supabase } from "utils/supabase";
 import { useEffect } from "react";
 import { useCallback } from "react";
 import { router } from "expo-router";
+import { notifySuccess, notifyError, notifyInfo,  } from "components/toast";
 
 const fetchTableNames = async () => {
   const { data, error } = await supabase
@@ -34,6 +35,7 @@ export const useFetchCategories = () => {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "AllTableNames" },
         () => {
+          notifyInfo("Die Fragen und Antworten wurden aktualisiert!");
           queryClient.invalidateQueries({ queryKey: ["tableNames"] });
           router.navigate("/");
         }
@@ -42,6 +44,7 @@ export const useFetchCategories = () => {
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "AllTableNames" },
         () => {
+          notifyInfo("Die Fragen und Antworten wurden aktualisiert!");
           queryClient.invalidateQueries({ queryKey: ["tableNames"] });
           router.navigate("/");
         }
@@ -50,6 +53,7 @@ export const useFetchCategories = () => {
         "postgres_changes",
         { event: "DELETE", schema: "public", table: "AllTableNames" },
         () => {
+          notifyInfo("Die Fragen und Antworten wurden aktualisiert!");
           queryClient.invalidateQueries({ queryKey: ["tableNames"] });
           router.navigate("/");
         }

@@ -3,6 +3,7 @@ import { supabase } from "utils/supabase";
 import { useEffect, useCallback, useState } from "react";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
+import { notifySuccess, notifyError, notifyInfo } from "components/toast";
 
 const fetchText = async (table: string, title: string) => {
   const { data, error } = await supabase
@@ -26,8 +27,8 @@ export const useFetchText = (table: string, title: string) => {
     queryKey,
     queryFn: () => fetchText(table, title),
     enabled: !!table && !!title,
-    staleTime: 1000 * 60 * 10, 
-    gcTime: 1000 * 60 * 10, 
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 10,
   });
 
   const {
@@ -44,7 +45,7 @@ export const useFetchText = (table: string, title: string) => {
           "postgres_changes",
           { event: "INSERT", schema: "public", table },
           () => {
-            Toast.show({ type: "info", text1: "Data has been updated!" });
+            notifyInfo("Die Fragen und Antworten wurden aktualisiert!");
             queryClient.invalidateQueries({ queryKey });
             router.navigate("/");
           }
@@ -53,7 +54,7 @@ export const useFetchText = (table: string, title: string) => {
           "postgres_changes",
           { event: "UPDATE", schema: "public", table },
           () => {
-            Toast.show({ type: "info", text1: "Data has been updated!" });
+            notifyInfo("Die Fragen und Antworten wurden aktualisiert!");
             queryClient.invalidateQueries({ queryKey });
             router.navigate("/");
           }
@@ -62,7 +63,7 @@ export const useFetchText = (table: string, title: string) => {
           "postgres_changes",
           { event: "DELETE", schema: "public", table },
           () => {
-            Toast.show({ type: "info", text1: "Data has been updated!" });
+            notifyInfo("Die Fragen und Antworten wurden aktualisiert!");
             queryClient.invalidateQueries({ queryKey });
             router.navigate("/");
           }

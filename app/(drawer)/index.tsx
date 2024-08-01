@@ -23,7 +23,7 @@ export default function index() {
 
   return (
     <View style={styles.container}>
-      <CustomToastContainer width={800} />
+      <CustomToastContainer width={450} />
       <View style={[styles.headerContainer, themeStyles.indexBorderDash]}>
         <View style={[styles.header, themeStyles.backgroundIndex]}>
           {/* <ImageBackground

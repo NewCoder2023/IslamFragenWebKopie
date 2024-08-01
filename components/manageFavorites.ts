@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Toast from "react-native-toast-message";
 import { useIsChanging } from "components/favStore";
+import { notifySuccess, notifyError, notifyInfo } from "./toast";
 
 interface FavoriteItem {
   id: string;
@@ -20,11 +20,9 @@ export const getFavorites = async (): Promise<FavoriteItem[]> => {
       return [];
     }
   } catch (e) {
-    Toast.show({
-      type: "error",
-      text1:
-        "Fehler beim Laden der Favoriten! Bitte überprüfen Sie Ihre Internetverbindung",
-    });
+    notifyError(
+      "Fehler beim Laden der Favoriten! Bitte überprüfen Sie Ihre Internetverbindung"
+    );
     return [];
   }
 };
@@ -38,11 +36,9 @@ export const storeFavorites = async (
     change();
   } catch (e) {
     console.log(e);
-    Toast.show({
-      type: "error",
-      text1:
-        "Fehler beim Hinzufügen zu den Favoriten! Bitte überprüfen Sie Ihre Internetverbindung",
-    });
+    notifyError(
+      "Fehler beim Hinzufügen zu den Favoriten! Bitte überprüfen Sie Ihre Internetverbindung"
+    );
   }
 };
 
