@@ -5,8 +5,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Colors from "constants/Colors";
 import { useColorScheme } from "hooks/useColorScheme.web";
 import { coustomTheme } from "./coustomTheme";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import { TextInput, TextInputProps } from "react-native";
 
 interface FontSizePickerModalProps {
   visible: boolean;
@@ -60,24 +58,14 @@ const FontSizePickerModal: React.FC<FontSizePickerModalProps> = ({
       animationType='slide'
       onRequestClose={onClose}
     >
-      <View
+      <Pressable
         style={[
           styles.modalContainer,
           themeStyles.modalQuestionBlurredBackground,
         ]}
+        onPress={onClose}
       >
-        <View style={[styles.pickerContainer, themeStyles.modalQuestion]}>
-          <Pressable
-            style={[
-              styles.closeButton,
-              {
-                outline: "none",
-              } as TextInputProps["style"],
-            ]}
-            onPress={() => onClose()}
-          >
-            <AntDesign name='closecircleo' size={20} color='#C3272B' />
-          </Pressable>
+        <Pressable style={[styles.pickerContainer, themeStyles.modalQuestion]} onPress={() => {}}>
           <Picker
             selectedValue={pickerValue}
             onValueChange={(itemValue) => {
@@ -107,8 +95,8 @@ const FontSizePickerModal: React.FC<FontSizePickerModalProps> = ({
               />
             ))}
           </Picker>
-        </View>
-      </View>
+        </Pressable>
+      </Pressable>
     </Modal>
   );
 };

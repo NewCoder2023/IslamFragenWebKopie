@@ -4,7 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   TextInput,
-  TouchableWithoutFeedback,
+  TextInputProps,
   Pressable,
   Modal,
 } from "react-native";
@@ -225,136 +225,170 @@ export default function askQuestion() {
           scrollViewRef.current.scrollToEnd({ animated: true })
         }
       >
-        <TextInput
-          style={[styles.input, themeStyles.inverseTextInput]}
-          onChangeText={(value) => handleInputChange("name", value)}
-          value={name}
-          placeholder='Name (optional)'
-          keyboardType='default'
-        />
-        <TextInput
-          style={[styles.input, themeStyles.inverseTextInput]}
-          onChangeText={(value) => handleInputChange("age", value)}
-          value={age}
-          placeholder='Alter (Pflicht)'
-          keyboardType='numeric'
-        />
-        <TextInput
-          style={[styles.input, themeStyles.inverseTextInput]}
-          onChangeText={(value) => handleInputChange("email", value)}
-          value={email}
-          placeholder='E-Mail (Pflicht)'
-          keyboardType='email-address'
-        />
-        <TextInput
-          style={[styles.input, themeStyles.inverseTextInput]}
-          onChangeText={(value) => handleInputChange("validateEmail", value)}
-          value={validateEmail}
-          placeholder='E-Mail wiederholen (Pflicht)'
-          keyboardType='email-address'
-        />
-
-        {/* Gender Picker */}
-        <Pressable onPress={() => setIsPickerVisibleGender(true)}>
-          <View style={[styles.pickerTrigger, themeStyles.inverseTextInput]}>
-            <Text style={[styles.pickerText, themeStyles.inverseQuestionText]}>
-              {genderOptions.find((option) => option.value === gender)?.label}
-            </Text>
-          </View>
-        </Pressable>
-        <Modal
-          visible={isPickerVisibleGender}
-          transparent={true}
-          animationType='slide'
-          onRequestClose={() => setIsPickerVisibleGender(false)}
-        >
-          <View style={[styles.modalContainer, themeStyles.modalQuestionBlurredBackground]}>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={gender}
-                onValueChange={(itemValue) => {
-                  handleInputChange("gender", itemValue);
-                  setIsPickerVisibleGender(false);
-                }}
-              >
-                {genderOptions.map((option) => (
-                  <Picker.Item
-                    key={option.value}
-                    label={option.label}
-                    value={option.value}
-                  />
-                ))}
-              </Picker>
-            </View>
-          </View>
-        </Modal>
-
-        {/* Marja Picker */}
-        <Pressable onPress={() => setIsPickerVisibleMarja(true)}>
-          <View style={[styles.pickerTrigger, themeStyles.inverseTextInput]}>
-            <Text style={[styles.pickerText, themeStyles.inverseQuestionText]}>
-              {marjaOptions.find((option) => option.value === marja)?.label}
-            </Text>
-          </View>
-        </Pressable>
-        <Modal
-          visible={isPickerVisibleMarja}
-          transparent={true}
-          animationType='slide'
-          onRequestClose={() => setIsPickerVisibleMarja(false)}
-        >
-          <View style={[styles.modalContainer, themeStyles.modalQuestionBlurredBackground]}>
-            <View
-              style={[
-                styles.pickerContainer,
-                themeStyles.pickerContainerBorder,
-              ]}
-            >
-              <Picker
-                selectedValue={marja}
-                onValueChange={(itemValue) => {
-                  handleInputChange("marja", itemValue);
-                  setIsPickerVisibleMarja(false);
-                }}
-              >
-                {marjaOptions.map((option) => (
-                  <Picker.Item
-                    key={option.value}
-                    label={option.label}
-                    value={option.value}
-                  />
-                ))}
-              </Picker>
-            </View>
-          </View>
-        </Modal>
-
-        <View style={styles.rules}>
-          <Checkbox
-            style={styles.rulesCheckbox}
-            value={acceptRules}
-            onValueChange={(value) => handleInputChange("acceptRules", value)}
+        <View style={styles.textInputContainer}>
+          <TextInput
+            style={[styles.input, themeStyles.inverseTextInput]}
+            onChangeText={(value) => handleInputChange("name", value)}
+            value={name}
+            placeholder='Name (optional)'
+            keyboardType='default'
           />
-          <View style={styles.linkContainer}>
-            <Text style={styles.linkText}>Ich habe die</Text>
-            <Link href='rules' style={[styles.link, themeStyles.link]}>
-              Richtlinien
-            </Link>
-            <Text style={styles.linkText}>gelesen und akzeptiert.</Text>
+          <TextInput
+            style={[styles.input, themeStyles.inverseTextInput]}
+            onChangeText={(value) => handleInputChange("age", value)}
+            value={age}
+            placeholder='Alter (Pflicht)'
+            keyboardType='numeric'
+          />
+          <TextInput
+            style={[styles.input, themeStyles.inverseTextInput]}
+            onChangeText={(value) => handleInputChange("email", value)}
+            value={email}
+            placeholder='E-Mail (Pflicht)'
+            keyboardType='email-address'
+          />
+          <TextInput
+            style={[styles.input, themeStyles.inverseTextInput]}
+            onChangeText={(value) => handleInputChange("validateEmail", value)}
+            value={validateEmail}
+            placeholder='E-Mail wiederholen (Pflicht)'
+            keyboardType='email-address'
+          />
+
+          {/* Gender Picker */}
+          <Pressable
+            onPress={() => setIsPickerVisibleGender(true)}
+            style={
+              {
+                outline: "none",
+              } as TextInputProps["style"]
+            }
+          >
+            <View style={[styles.pickerTrigger, themeStyles.inverseTextInput]}>
+              <Text
+                style={[styles.pickerText, themeStyles.inverseQuestionText]}
+              >
+                {genderOptions.find((option) => option.value === gender)?.label}
+              </Text>
+            </View>
+          </Pressable>
+          <Modal
+            visible={isPickerVisibleGender}
+            transparent={true}
+            animationType='slide'
+            onRequestClose={() => setIsPickerVisibleGender(false)}
+          >
+            <Pressable
+              style={[
+                styles.modalContainer,
+                themeStyles.modalQuestionBlurredBackground,
+              ]}
+              onPress={() => setIsPickerVisibleGender(false)}
+            >
+              <Pressable
+                style={styles.pickerContainer}
+                onPress={(event) => event.stopPropagation()}
+              >
+                <Picker
+                  selectedValue={gender}
+                  onValueChange={(itemValue) => {
+                    handleInputChange("gender", itemValue);
+                    setIsPickerVisibleGender(false);
+                  }}
+                >
+                  {genderOptions.map((option) => (
+                    <Picker.Item
+                      key={option.value}
+                      label={option.label}
+                      value={option.value}
+                    />
+                  ))}
+                </Picker>
+              </Pressable>
+            </Pressable>
+          </Modal>
+
+          {/* Marja Picker */}
+
+          <Pressable
+            onPress={() => setIsPickerVisibleMarja(true)}
+            style={
+              {
+                outline: "none",
+              } as TextInputProps["style"]
+            }
+          >
+            <View style={[styles.pickerTrigger, themeStyles.inverseTextInput]}>
+              <Text
+                style={[styles.pickerText, themeStyles.inverseQuestionText]}
+              >
+                {marjaOptions.find((option) => option.value === marja)?.label}
+              </Text>
+            </View>
+          </Pressable>
+          <Modal
+            visible={isPickerVisibleMarja}
+            transparent={true}
+            animationType='slide'
+            onRequestClose={() => setIsPickerVisibleMarja(false)}
+          >
+            <Pressable
+              style={[
+                styles.modalContainer,
+                themeStyles.modalQuestionBlurredBackground,
+              ]}
+              onPress={() => setIsPickerVisibleMarja(false)}
+            >
+              <Pressable
+                style={styles.pickerContainer}
+                onPress={(event) => event.stopPropagation()}
+              >
+                <Picker
+                  selectedValue={marja}
+                  onValueChange={(itemValue) => {
+                    handleInputChange("marja", itemValue);
+                    setIsPickerVisibleMarja(false);
+                  }}
+                >
+                  {marjaOptions.map((option) => (
+                    <Picker.Item
+                      key={option.value}
+                      label={option.label}
+                      value={option.value}
+                    />
+                  ))}
+                </Picker>
+              </Pressable>
+            </Pressable>
+          </Modal>
+
+          <View style={styles.rules}>
+            <Checkbox
+              style={styles.rulesCheckbox}
+              value={acceptRules}
+              onValueChange={(value) => handleInputChange("acceptRules", value)}
+            />
+            <View style={styles.linkContainer}>
+              <Text style={styles.linkText}>Ich habe die</Text>
+              <Link href='rules' style={[styles.link, themeStyles.link]}>
+                Richtlinien
+              </Link>
+              <Text style={styles.linkText}>gelesen und akzeptiert.</Text>
+            </View>
           </View>
+          <TextInput
+            style={[
+              styles.input,
+              styles.inputQuestion,
+              themeStyles.inverseTextInput,
+            ]}
+            onChangeText={(value) => handleInputChange("question", value)}
+            value={question}
+            placeholder='Frage (Pflicht)'
+            multiline={true}
+            keyboardType='default'
+          />
         </View>
-        <TextInput
-          style={[
-            styles.input,
-            styles.inputQuestion,
-            themeStyles.inverseTextInput,
-          ]}
-          onChangeText={(value) => handleInputChange("question", value)}
-          value={question}
-          placeholder='Frage (Pflicht)'
-          multiline={true}
-          keyboardType='default'
-        />
       </ScrollView>
       {showCaptcha && (
         <HCaptcha
@@ -392,16 +426,20 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   scrollStyle: {
+    flex: 1,
+  },
+  textInputContainer: {
     width: "100%",
     maxWidth: 700,
     marginHorizontal: "auto",
   },
+
   input: {
     marginHorizontal: 10,
     paddingHorizontal: 12,
     marginTop: 10,
     marginBottom: 10,
-    paddingVertical: 10,
+    paddingVertical: 12,
     borderWidth: 1,
     borderRadius: 20,
     fontSize: 16,
