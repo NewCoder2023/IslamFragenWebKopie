@@ -19,7 +19,7 @@ export default function RenderFavorites({ items }) {
   };
 
   const colorScheme = useColorScheme();
-  const themeStyles = coustomTheme(colorScheme);
+  const themeStyles = coustomTheme();
   const appColor = Appearance.getColorScheme();
 
   const renderItems = ({ item }) => (

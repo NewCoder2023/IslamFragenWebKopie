@@ -52,7 +52,7 @@ const CustomToastContainer = ({ width = 300 }) => (
       draggable
       pauseOnHover
       theme='light'
-      style={{ marginTop: 80, width: "80%", maxWidth: width }}
+      style={{ marginTop: 80, width: "80%", maxWidth: width, lineHeight: 1.5}}
     />
   </>
 );

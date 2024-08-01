@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   image: {
-    width: "35%",
+    width: "65%",
+    maxWidth: 400,
     height: "auto",
     aspectRatio: 1,
   },

@@ -109,7 +109,7 @@ export default function RenderText() {
 
   return (
     <View style={styles.container}>
-      <CustomToastContainer />
+      <CustomToastContainer width={300}/>
       <FontSizePickerModal
         visible={isPickerVisible}
         onClose={() => setIsPickerVisible(false)}
