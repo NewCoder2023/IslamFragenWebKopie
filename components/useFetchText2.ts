@@ -1,9 +1,8 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "utils/supabase";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
-
 
 const fetchText = async (table: string, title: string) => {
   const { data, error } = await supabase
@@ -16,7 +15,6 @@ const fetchText = async (table: string, title: string) => {
     throw new Error(error.message);
   }
 
-  console.log(data);
   return data;
 };
 
@@ -29,7 +27,7 @@ export const useFetchText = (table: string, title: string) => {
     queryFn: () => fetchText(table, title),
     enabled: !!table && !!title,
     staleTime: 1000 * 60 * 5, // 5 minutes
-    cacheTime: 1000 * 60 * 30, // 30 minutes
+    gcTime: 1000 * 60 * 10, // Keep data in cache for 10 minuten
   });
 
   const {
@@ -90,7 +88,7 @@ export const useFetchText = (table: string, title: string) => {
 
   return {
     item,
-    fetchError: fetchError?.message || fetchError,
+    fetchError: fetchError?.message || "",
     isFetching,
     refetch: () => queryClient.invalidateQueries({ queryKey }),
   };

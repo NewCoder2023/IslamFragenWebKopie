@@ -22,9 +22,10 @@ export const useFetchCategories = () => {
     queryKey: ["tableNames"],
     queryFn: fetchTableNames,
     staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
-    cacheTime: 1000 * 60 * 10, // Keep data in cache for 10 minuten
+    gcTime: 1000 * 60 * 10, // Keep data in cache for 10 minuten
   });
 
+  
   const subscribeToTable = useCallback(() => {
     const subscription = supabase
       .channel("AllTableNames")
@@ -66,5 +67,11 @@ export const useFetchCategories = () => {
     };
   }, [subscribeToTable]);
 
-  return query;
+  return {
+    data: query.data,
+    CategoriesError: query.error?.message || "",
+    isFetchingCat: query.isLoading,
+    isFetching: query.isFetching,
+    refetch: query.refetch,
+  };
 };

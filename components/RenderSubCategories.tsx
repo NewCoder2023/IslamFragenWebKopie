@@ -27,13 +27,6 @@ export default function RenderSubCategories({
   table,
   isFetching,
 }: RenderSubCategoriesProps) {
-  // const encodeTitle = (title: string) => {
-  //   const cleanedTitle = title.trim().replace(/\n/g, "");
-  //   return encodeURIComponent(cleanedTitle)
-  //     .replace(/\(/g, "%28")
-  //     .replace(/\)/g, "%29");
-  // };
-
   const colorScheme = useColorScheme();
   const themeStyles = coustomTheme();
 
@@ -54,8 +47,7 @@ export default function RenderSubCategories({
               color={colorScheme == "light" ? "black" : "white"}
             />
             <Text style={styles.loadingIndicatorText}>
-              Fragen werden geladen. Das kann je nach Internetverbindung, einen
-              kleinen Augenblick dauern!
+              Fragen werden geladen.
             </Text>
             <Text style={styles.loadingIndicatorText}>
               Allahumma salli ala Muhammad wa aali Muhammad
@@ -115,6 +107,8 @@ const styles = StyleSheet.create({
   },
   itemsContainer: {
     flex: 1,
+    height: "100%"
+    
   },
   loadingIndicator: {
     flex: 1,
@@ -126,6 +120,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     marginTop: 15,
+    fontWeight: "bold"
   },
 
   FlashListItems: {

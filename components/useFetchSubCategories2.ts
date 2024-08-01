@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "utils/supabase";
 import { useEffect, useCallback } from "react";
-import { useFetchCategories } from "./useFetchCategories";
+import { useFetchCategories } from "components/useFetchCategories";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
 
@@ -35,11 +35,16 @@ const fetchSubCategories = async (tableNames: string[]) => {
 
 export default function useFetchSubCategories() {
   const queryClient = useQueryClient();
-  const { data: tableNamesData, isLoading: isTableNamesLoading, error: tableNamesError } = useFetchCategories();
+  const {
+    data: tableNamesData,
+    isFetchingCat,
+    CategoriesError,
+  } = useFetchCategories();
 
   // Adjusting the type definition to match the expected structure
-  const tableNames = tableNamesData?.flatMap((table: { tableName: string; category: string }) =>
-    table.tableName.split(",").map((t: string) => t.trim())
+  const tableNames = tableNamesData?.flatMap(
+    (table: { tableName: string; category: string }) =>
+      table.tableName.split(",").map((t: string) => t.trim())
   );
 
   const queryKey = ["subCategories", tableNames];
@@ -49,30 +54,56 @@ export default function useFetchSubCategories() {
     queryFn: () => fetchSubCategories(tableNames || []),
     enabled: !!tableNames && tableNames.length > 0,
     staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+    gcTime: 1000 * 60 * 10, // Keep data in cache for 10 minuten
   });
 
-  const { data: subCategories, isLoading: isFetchingSub, error: fetchError } = fetchSubCategoriesQuery;
+  const {
+    data: subCategories,
+    isLoading: isFetchingSub,
+    error: SubCategoriesError,
+  } = fetchSubCategoriesQuery;
 
   const subscribeToTable = useCallback(() => {
     if (tableNames) {
       const subscriptions = tableNames.map((tableName) => {
         return supabase
           .channel(tableName)
-          .on("postgres_changes", { event: "INSERT", schema: "public", table: tableName }, () => {
-            Toast.show({ type: "info", text1: "Die Fragen und Antworten wurden aktualisiert!" });
-            queryClient.invalidateQueries({ queryKey: ["subCategories"] });
-            router.navigate("/");
-          })
-          .on("postgres_changes", { event: "UPDATE", schema: "public", table: tableName }, () => {
-            Toast.show({ type: "info", text1: "Die Fragen und Antworten wurden aktualisiert!" });
-            queryClient.invalidateQueries({ queryKey: ["subCategories"] });
-            router.navigate("/");
-          })
-          .on("postgres_changes", { event: "DELETE", schema: "public", table: tableName }, () => {
-            Toast.show({ type: "info", text1: "Die Fragen und Antworten wurden aktualisiert!" });
-            queryClient.invalidateQueries({ queryKey: ["subCategories"] });
-            router.navigate("/");
-          })
+          .on(
+            "postgres_changes",
+            { event: "INSERT", schema: "public", table: tableName },
+            () => {
+              Toast.show({
+                type: "info",
+                text1: "Die Fragen und Antworten wurden aktualisiert!",
+              });
+              queryClient.invalidateQueries({ queryKey: ["subCategories"] });
+              router.navigate("/");
+            }
+          )
+          .on(
+            "postgres_changes",
+            { event: "UPDATE", schema: "public", table: tableName },
+            () => {
+              Toast.show({
+                type: "info",
+                text1: "Die Fragen und Antworten wurden aktualisiert!",
+              });
+              queryClient.invalidateQueries({ queryKey: ["subCategories"] });
+              router.navigate("/");
+            }
+          )
+          .on(
+            "postgres_changes",
+            { event: "DELETE", schema: "public", table: tableName },
+            () => {
+              Toast.show({
+                type: "info",
+                text1: "Die Fragen und Antworten wurden aktualisiert!",
+              });
+              queryClient.invalidateQueries({ queryKey: ["subCategories"] });
+              router.navigate("/");
+            }
+          )
           .subscribe();
       });
 
@@ -91,14 +122,15 @@ export default function useFetchSubCategories() {
         }
       };
     }
-    console.log(subCategories)
+    console.log(subCategories);
   }, [tableNames, subscribeToTable]);
 
   return {
-    fetchError,
+    SubCategoriesError: SubCategoriesError ? SubCategoriesError.message : undefined,
     subCategories,
-    refetch: () => queryClient.invalidateQueries({ queryKey: ["subCategories"] }),
-    isFetchingSub: isTableNamesLoading,
-    tableNamesError,
+    refetch: () =>
+      queryClient.invalidateQueries({ queryKey: ["subCategories"] }),
+    isFetchingSub: isFetchingCat,
+    CategoriesError,
   };
 }

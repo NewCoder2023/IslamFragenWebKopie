@@ -4,6 +4,7 @@ import { useLocalSearchParams } from "expo-router";
 import RenderCategories from "components/RenderCategories";
 import { Stack } from "expo-router";
 import { useFetchCategories } from "components/useFetchCategories";
+import { Loading } from "components/Loading";
 
 export default function GetCategories() {
   const { category } = useLocalSearchParams<{ category: string }>();
@@ -15,31 +16,19 @@ export default function GetCategories() {
       .replace(/\)/g, "%29");
   };
 
-  const { data: tableNames, error, isLoading } = useFetchCategories();
+  const {
+    data: tableNames,
+    CategoriesError,
+    isFetchingCat,
+  } = useFetchCategories();
 
-  if (!category) {
-    return (
-      <View style={styles.container}>
-        <RenderCategories
-          items={[]}
-          fetchError='Invalid category'
-          table=''
-          isFetchinTable={isLoading}
-        />
-      </View>
-    );
-  }
-
-  if (isLoading) {
-    return <Text>Loading...</Text>;
-  }
-
-  if (error) {
-    return <Text>Error loading data: {error.message}</Text>;
+  // Render Loading till tableNames is fetched
+  if (isFetchingCat) {
+    return <Loading message='Kategorien werden geladen!' />;
   }
 
   // Filter and map the category items
-  const categoryItems = tableNames
+  const categoryItems = (tableNames ?? [])
     .filter((item) => item.category === category)
     .map((item, index) => ({
       id: index,
@@ -48,13 +37,24 @@ export default function GetCategories() {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ headerTitle: category }} />
-      <RenderCategories
-        items={categoryItems}
-        fetchError={error ? error.message : null}
-        table={encodeTable(category)}
-        isFetchinTable={isLoading}
-      />
+      {!tableNames || !category ? (
+        <RenderCategories
+          items={[]}
+          fetchError={CategoriesError}
+          table={""}
+          isFetchinTable={isFetchingCat}
+        />
+      ) : (
+        <View style={styles.container}>
+          <Stack.Screen options={{ headerTitle: category }} />
+          <RenderCategories
+            items={categoryItems}
+            fetchError={CategoriesError}
+            table={encodeTable(category)}
+            isFetchinTable={isFetchingCat}
+          />
+        </View>
+      )}
     </View>
   );
 }

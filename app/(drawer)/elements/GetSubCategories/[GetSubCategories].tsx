@@ -5,13 +5,12 @@ import { useLocalSearchParams } from "expo-router";
 import RenderSubCategories from "components/RenderSubCategories";
 import { Stack } from "expo-router";
 import useFetchSubCategories from "components/useFetchSubCategories2";
-import { useRefetchSubeStore } from "components/refetchSubStore";
+import { Loading } from "components/Loading";
 
 export default function GetSubCategories() {
   const { subCategory } = useLocalSearchParams<{ subCategory: string }>();
-  const { fetchError, subCategories, refetch, isFetchingSub } =
+  const { SubCategoriesError, subCategories, refetch, isFetchingSub } =
     useFetchSubCategories();
-  const { fetchStatus, setRefetch, hasRefetched } = useRefetchSubeStore();
 
   const encodeTable = (title: string) => {
     const cleanTable = title.trim().replace(/\n/g, "");
@@ -20,13 +19,9 @@ export default function GetSubCategories() {
       .replace(/\)/g, "%29");
   };
 
-  // Use effect hook to refetch data when subCategory changes
-  useLayoutEffect(() => {
-    if (subCategory && !hasRefetched(subCategory)) {
-      refetch();
-      setRefetch(subCategory);
-    }
-  }, [subCategory, refetch, setRefetch, hasRefetched]);
+  if (isFetchingSub) {
+    return <Loading message="Kategorien werden geladen!" />;
+  }
 
   // Determine matched table and filtered items based on subCategory
   const matchedTable = subCategories?.find(
@@ -34,13 +29,13 @@ export default function GetSubCategories() {
   );
   const filteredItems = matchedTable ? matchedTable.questions : [];
 
-  console.log(subCategory);
+
   return (
     <View style={styles.container}>
       {!subCategory ? (
         <RenderSubCategories
           items={[]}
-          fetchError={fetchError}
+          fetchError={SubCategoriesError}
           table=''
           isFetching={isFetchingSub}
         />
@@ -49,7 +44,7 @@ export default function GetSubCategories() {
           <Stack.Screen options={{ headerTitle: subCategory }} />
           <RenderSubCategories
             items={filteredItems}
-            fetchError={fetchError}
+            fetchError={SubCategoriesError}
             table={encodeTable(subCategory)}
             isFetching={isFetchingSub}
           />

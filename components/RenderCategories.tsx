@@ -6,9 +6,9 @@ import { Link } from "expo-router";
 import { useColorScheme } from "hooks/useColorScheme.web";
 import { FlashList } from "@shopify/flash-list";
 import { coustomTheme } from "./coustomTheme";
-import { ActivityIndicator } from "react-native";
 import { formatTitle } from "components/formatTitle";
 import { encodeTitle } from "components/encodeTitle";
+import { Loading } from "components/Loading";
 
 interface NestedItem {
   id: number;
@@ -41,19 +41,7 @@ const RenderCategories: React.FC<RenderNestedItemsProps> = ({
           </View>
         )}
         {isFetchinTable && (
-          <View style={styles.loadingIndicator}>
-            <ActivityIndicator
-              size='large'
-              color={colorScheme == "light" ? "black" : "white"}
-            />
-            <Text style={styles.loadingIndicatorText}>
-              Kategorien werden geladen. Das kann je nach Internetverbindung,
-              einen kleinen Augenblick dauern!
-            </Text>
-            <Text style={styles.loadingIndicatorText}>
-              Allahumma salli ala Muhammad wa aali Muhammad
-            </Text>
-          </View>
+          <Loading message="Kategorien werden geladen!"/>
         )}
         {items.length > 0 && (
           <View style={styles.itemsContainer}>
@@ -103,11 +91,12 @@ const RenderCategories: React.FC<RenderNestedItemsProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 5,
-    marginBottom: 10,
+    paddingTop: 5,
+    paddingBottom: 10,
   },
   itemsContainer: {
     flex: 1,
+    height: "100%"
   },
   FlashListItems: {
     paddingTop: 15,
@@ -144,7 +133,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     marginTop: 15,
+    fontWeight: "bold"
   },
 });
 
 export default RenderCategories;
+
