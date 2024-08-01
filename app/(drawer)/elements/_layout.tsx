@@ -10,6 +10,9 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { useColorScheme } from "hooks/useColorScheme.web";
 import React from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import queryClient from "components/queryClient";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -61,21 +64,24 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen
-          name='GetSubCategories/[GetSubCategories]'
-          options={{
-            headerShown: false,
-          }}
-        />
+      <QueryClientProvider client={queryClient}>
+        <Stack>
+          <Stack.Screen
+            name='GetSubCategories/[GetSubCategories]'
+            options={{
+              headerShown: false,
+            }}
+          />
 
-        <Stack.Screen
-          name='GetCategories/[GetCategories]'
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack>
+          <Stack.Screen
+            name='GetCategories/[GetCategories]'
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

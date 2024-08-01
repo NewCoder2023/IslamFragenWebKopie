@@ -4,7 +4,6 @@ import { StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Toast from "react-native-toast-message";
 import RenderFavorites from "components/RenderFavorites";
 import { useIsChanging } from "components/favStore";
 import {
@@ -50,11 +49,9 @@ export default function favourites() {
           setFavorites([]);
         }
       } catch (e) {
-        Toast.show({
-          type: "error",
-          text1:
-            "Fehler beim Laden der Favoriten! Bitte überprüfen Sie Ihre Internetverbindung",
-        });
+        notifyError(
+          "Fehler beim Laden der Favoriten! Bitte überprüfen Sie Ihre Internetverbindung"
+        );
         // Fallback to empty array in case of error
         setFavorites([]);
       }
