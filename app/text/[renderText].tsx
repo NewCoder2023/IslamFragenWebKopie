@@ -20,8 +20,6 @@ import SingleAnswer from "components/SingleAnswereRenderText";
 import { copySingleAnswer } from "components/copySingleAnswer";
 import { copyMultipleAnswers } from "components/copyMultipleAnswers";
 import MultipleAnswers from "components/MultipleAnswersRenderText";
-// import { useFetchTableNames } from "components/useFetchTableNames";
-// import useFetchSubCategories from "components/useFetchSubCategories";
 import { useFetchText } from "components/useFetchText2";
 
 export default function RenderText() {
@@ -35,6 +33,9 @@ export default function RenderText() {
     table || "",
     title || ""
   );
+
+  console.log("table: " + table);
+  console.log("title: " + title);
 
   const {
     fontSize,
@@ -69,8 +70,7 @@ export default function RenderText() {
   };
 
   useLayoutEffect(() => {
-
-   // initialFetchDone();
+    // initialFetchDone();
     initializeSettings();
     router.canGoBack() ? setCanBack(true) : setCanBack(false);
 
@@ -107,8 +107,6 @@ export default function RenderText() {
     );
   };
 
-  // const { tableNames, isFetchinTable, fetchTableNames } = useFetchTableNames();
-  // const { subCategories } = useFetchSubCategories();
   return (
     <View style={styles.container}>
       <CustomToastContainer />
@@ -138,7 +136,9 @@ export default function RenderText() {
       />
       {fetchError ? (
         <View style={styles.renderError}>
-          <Text style={styles.errorText}>{fetchError}</Text>
+          <Text style={styles.errorText}>
+            {fetchError}
+          </Text>
         </View>
       ) : displaySingleAnswer ? (
         <SingleAnswer

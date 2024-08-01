@@ -4,6 +4,7 @@ import { useEffect, useCallback } from "react";
 import Toast from "react-native-toast-message";
 import { router } from "expo-router";
 
+
 const fetchText = async (table: string, title: string) => {
   const { data, error } = await supabase
     .from(table)
@@ -15,6 +16,7 @@ const fetchText = async (table: string, title: string) => {
     throw new Error(error.message);
   }
 
+  console.log(data);
   return data;
 };
 
@@ -30,24 +32,43 @@ export const useFetchText = (table: string, title: string) => {
     cacheTime: 1000 * 60 * 30, // 30 minutes
   });
 
-  const { data: item, isLoading: isFetching, error: fetchError } = fetchTextQuery;
+  const {
+    data: item,
+    isLoading: isFetching,
+    error: fetchError,
+  } = fetchTextQuery;
 
   const subscribeToTable = useCallback(() => {
     if (table) {
       const subscription = supabase
         .channel(table)
-        .on("postgres_changes", { event: "INSERT", schema: "public", table }, () => {
-          Toast.show({ type: "info", text1: "Data has been updated!" });
-          queryClient.invalidateQueries({ queryKey });
-        })
-        .on("postgres_changes", { event: "UPDATE", schema: "public", table }, () => {
-          Toast.show({ type: "info", text1: "Data has been updated!" });
-          queryClient.invalidateQueries({ queryKey });
-        })
-        .on("postgres_changes", { event: "DELETE", schema: "public", table }, () => {
-          Toast.show({ type: "info", text1: "Data has been updated!" });
-          queryClient.invalidateQueries({ queryKey });
-        })
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table },
+          () => {
+            Toast.show({ type: "info", text1: "Data has been updated!" });
+            queryClient.invalidateQueries({ queryKey });
+            router.navigate("/");
+          }
+        )
+        .on(
+          "postgres_changes",
+          { event: "UPDATE", schema: "public", table },
+          () => {
+            Toast.show({ type: "info", text1: "Data has been updated!" });
+            queryClient.invalidateQueries({ queryKey });
+            router.navigate("/");
+          }
+        )
+        .on(
+          "postgres_changes",
+          { event: "DELETE", schema: "public", table },
+          () => {
+            Toast.show({ type: "info", text1: "Data has been updated!" });
+            queryClient.invalidateQueries({ queryKey });
+            router.navigate("/");
+          }
+        )
         .subscribe();
 
       return () => {
@@ -69,7 +90,7 @@ export const useFetchText = (table: string, title: string) => {
 
   return {
     item,
-    fetchError,
+    fetchError: fetchError?.message || fetchError,
     isFetching,
     refetch: () => queryClient.invalidateQueries({ queryKey }),
   };

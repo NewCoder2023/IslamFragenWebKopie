@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "utils/supabase";
 import { useEffect } from "react";
 import { useCallback } from "react";
+import { router } from "expo-router";
 
 const fetchTableNames = async () => {
   const { data, error } = await supabase
@@ -32,6 +33,7 @@ export const useFetchCategories = () => {
         { event: "INSERT", schema: "public", table: "AllTableNames" },
         () => {
           queryClient.invalidateQueries({ queryKey: ["tableNames"] });
+          router.navigate("/");
         }
       )
       .on(
@@ -39,6 +41,7 @@ export const useFetchCategories = () => {
         { event: "UPDATE", schema: "public", table: "AllTableNames" },
         () => {
           queryClient.invalidateQueries({ queryKey: ["tableNames"] });
+          router.navigate("/");
         }
       )
       .on(
@@ -46,6 +49,7 @@ export const useFetchCategories = () => {
         { event: "DELETE", schema: "public", table: "AllTableNames" },
         () => {
           queryClient.invalidateQueries({ queryKey: ["tableNames"] });
+          router.navigate("/");
         }
       )
       .subscribe();
