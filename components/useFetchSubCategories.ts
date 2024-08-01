@@ -55,6 +55,7 @@ export default function useFetchSubCategories() {
     enabled: !!tableNames && tableNames.length > 0,
     staleTime: 1000 * 60 * 10,
     gcTime: 1000 * 60 * 10,
+    refetchOnReconnect: true
   });
 
   const {

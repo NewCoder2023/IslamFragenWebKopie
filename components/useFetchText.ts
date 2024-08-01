@@ -29,6 +29,7 @@ export const useFetchText = (table: string, title: string) => {
     enabled: !!table && !!title,
     staleTime: 1000 * 60 * 10,
     gcTime: 1000 * 60 * 10,
+    refetchOnReconnect: true
   });
 
   const {

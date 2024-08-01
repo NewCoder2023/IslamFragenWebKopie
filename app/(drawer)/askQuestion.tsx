@@ -429,6 +429,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textInputContainer: {
+    flex: 1,
     width: "100%",
     maxWidth: 700,
     marginHorizontal: "auto",
