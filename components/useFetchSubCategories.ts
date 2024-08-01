@@ -1,5 +1,5 @@
 import { supabase } from "@/utils/supabase";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFetchTableNames } from "./useFetchTableNames";
 import { router } from "expo-router";
@@ -121,7 +121,7 @@ export default function useFetchSubCategories() {
 
   const subscribeToTable = async () => {
     if (tableNames && tableNames.length > 0) {
-      const subscriptions = [];
+      const subscriptions: any = [];
       for (const table of tableNames) {
         const tablesArray = table.tableNames.split(",").map((t) => t.trim());
         for (const tableName of tablesArray) {
@@ -167,12 +167,12 @@ export default function useFetchSubCategories() {
       }
 
       return () => {
-        subscriptions.forEach((subscription) => subscription.unsubscribe());
+        subscriptions.forEach((subscription: any) => subscription.unsubscribe());
       };
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const checkStorageAndFetch = async () => {
       const initialFetchDone = await AsyncStorage.getItem(
         INITIAL_FETCH_KEY_SubCategory

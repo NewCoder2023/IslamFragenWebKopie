@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { useLocalSearchParams } from "expo-router";
-import RenderNestedItems from "components/RenderNestedItems";
+import RenderCategories from "components/RenderCategories";
 import { Stack } from "expo-router";
 import { useFetchCategories } from "components/useFetchCategories";
 
-export default function RenderNestedCategories() {
+export default function GetCategories() {
   const { category } = useLocalSearchParams<{ category: string }>();
 
   const encodeTable = (title: string) => {
@@ -20,7 +20,7 @@ export default function RenderNestedCategories() {
   if (!category) {
     return (
       <View style={styles.container}>
-        <RenderNestedItems
+        <RenderCategories
           items={[]}
           fetchError='Invalid category'
           table=''
@@ -49,7 +49,7 @@ export default function RenderNestedCategories() {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ headerTitle: category }} />
-      <RenderNestedItems
+      <RenderCategories
         items={categoryItems}
         fetchError={error ? error.message : null}
         table={encodeTable(category)}

@@ -21,6 +21,7 @@ export const useFetchCategories = () => {
     queryKey: ["tableNames"],
     queryFn: fetchTableNames,
     staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+    cacheTime: 1000 * 60 * 10, // Keep data in cache for 10 minuten
   });
 
   const subscribeToTable = useCallback(() => {

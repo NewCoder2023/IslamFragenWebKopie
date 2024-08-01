@@ -9,24 +9,31 @@ import { coustomTheme } from "./coustomTheme";
 import { ActivityIndicator } from "react-native";
 import { formatTitle } from "components/formatTitle";
 import { encodeTitle } from "components/encodeTitle";
-
-interface NestedItem {
+interface Item {
   id: number;
   title: string;
 }
 
-interface RenderNestedItemsProps {
-  items: NestedItem[];
+interface RenderSubCategoriesProps {
+  items: Item[];
   fetchError?: string;
   table: string;
-  isFetchinTable: boolean;
+  isFetching: boolean;
 }
 
-const RenderNestedItems: React.FC<RenderNestedItemsProps> = ({
+export default function RenderSubCategories({
   items,
   fetchError,
-  isFetchinTable,
-}) => {
+  table,
+  isFetching,
+}: RenderSubCategoriesProps) {
+  // const encodeTitle = (title: string) => {
+  //   const cleanedTitle = title.trim().replace(/\n/g, "");
+  //   return encodeURIComponent(cleanedTitle)
+  //     .replace(/\(/g, "%28")
+  //     .replace(/\)/g, "%29");
+  // };
+
   const colorScheme = useColorScheme();
   const themeStyles = coustomTheme();
 
@@ -40,41 +47,41 @@ const RenderNestedItems: React.FC<RenderNestedItemsProps> = ({
             </Text>
           </View>
         )}
-        {isFetchinTable && (
+        {isFetching && (
           <View style={styles.loadingIndicator}>
             <ActivityIndicator
               size='large'
               color={colorScheme == "light" ? "black" : "white"}
             />
             <Text style={styles.loadingIndicatorText}>
-              Kategorien werden geladen. Das kann je nach Internetverbindung,
-              einen kleinen Augenblick dauern!
+              Fragen werden geladen. Das kann je nach Internetverbindung, einen
+              kleinen Augenblick dauern!
             </Text>
             <Text style={styles.loadingIndicatorText}>
               Allahumma salli ala Muhammad wa aali Muhammad
             </Text>
           </View>
         )}
-        {items.length > 0 && (
+        {items.length > 0 && !isFetching && (
           <View style={styles.itemsContainer}>
             <FlashList
               data={items}
               extraData={colorScheme}
-              estimatedItemSize={85}
+              estimatedItemSize={82}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
                 <Link
                   style={styles.FlashListItems}
-                  key={item.id.toString()}
                   href={{
-                    pathname: "elements/renderCategory/[renderCategory]",
+                    pathname: `text/[renderText]`,
                     params: {
-                      subCategory: `${encodeTitle(item.title)}`,
-                      id: item.id.toString(),
-                      fetchError: fetchError,
+                      id: item.id,
+                      table: table,
+                      title: `${encodeTitle(item.title)}`,
                     },
                   }}
                   asChild
+                  push
                 >
                   <Pressable>
                     <View
@@ -98,41 +105,16 @@ const RenderNestedItems: React.FC<RenderNestedItemsProps> = ({
       </>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 5,
-    marginBottom: 10,
+    marginBottom: 5,
   },
   itemsContainer: {
     flex: 1,
-  },
-  FlashListItems: {
-    paddingTop: 15,
-  },
-  renderItem: {
-    flexDirection: "row",
-    padding: 20,
-    borderWidth: 0.2,
-    alignItems: "center",
-  },
-  itemText: {
-    flex: 1,
-    fontSize: 16,
-    fontWeight: "bold",
-    paddingRight: 20,
-    lineHeight: 30,
-  },
-  renderError: {
-    marginTop: 20,
-    paddingLeft: 12,
-    paddingRight: 12,
-  },
-  errorText: {
-    fontSize: 20,
-    textAlign: "center",
   },
   loadingIndicator: {
     flex: 1,
@@ -145,6 +127,31 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 15,
   },
-});
 
-export default RenderNestedItems;
+  FlashListItems: {
+    paddingTop: 15,
+  },
+  renderItem: {
+    flex: 1,
+    flexDirection: "row",
+    padding: 20,
+    borderWidth: 0.2,
+    alignItems: "center",
+  },
+  itemText: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: "bold",
+    paddingRight: 20,
+    lineHeight: 25,
+  },
+  renderError: {
+    marginTop: 20,
+    paddingLeft: 12,
+    paddingRight: 12,
+  },
+  errorText: {
+    fontSize: 20,
+    textAlign: "center",
+  },
+});

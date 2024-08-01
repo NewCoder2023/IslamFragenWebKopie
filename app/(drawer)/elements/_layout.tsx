@@ -67,14 +67,14 @@ function RootLayoutNav() {
        <QueryClientProvider client={queryClient}>
       <Stack>
         <Stack.Screen
-          name='renderCategory/[renderCategory]'
+          name='GetSubCategories/[GetSubCategories]'
           options={{
             headerShown: false,
           }}
         />
 
         <Stack.Screen
-          name='renderNestedCategories/[renderNestedCategories]'
+          name='GetCategories/[GetCategories]'
           options={{
             headerShown: false,
           }}

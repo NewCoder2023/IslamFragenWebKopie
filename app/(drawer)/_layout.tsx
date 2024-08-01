@@ -16,19 +16,21 @@ export default function Layout() {
     (state: any) => state.toggleColorScheme
   );
 
-  const headerWithoutButton = (colorScheme: any) => ({
-    headerStyle: {
-      backgroundColor: colorScheme === "light" ? "white" : "black", // Set background color
-    },
-    headerTintColor: colorScheme === "light" ? "black" : "white", // Set text color
-    headerTitleStyle: {
-      fontWeight: "bold" as TextStyle["fontWeight"], // Ensure correct type
-    },
-  });
+   // Generate a key based on the color scheme to force re-render
+   const drawerKey = `drawer-${colorScheme}`;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer initialRouteName='/index' screenOptions={{   }}>
+      <Drawer
+       key={drawerKey} // Use key to force re-render on color scheme change
+        initialRouteName='/index'
+        screenOptions={{
+          headerTintColor: colorScheme === "light" ? "black" : "white",
+          headerStyle: {
+            backgroundColor: colorScheme === "light" ? "white" : "black",
+          },
+        }}
+      >
         <Drawer.Screen
           name='index' // This is the name of the page and must match the url from root
           options={{
@@ -43,7 +45,6 @@ export default function Layout() {
             drawerLabel: () => null,
             title: "",
             drawerItemStyle: { height: 0 }, // Hide the item by setting its height to 0
-            ...headerWithoutButton(colorScheme),
           }}
         />
         <Drawer.Screen
@@ -59,7 +60,7 @@ export default function Layout() {
           options={{
             drawerLabel: "Frage stellen",
             title: "Eine Frage stellen",
-            ...headerWithoutButton(colorScheme),
+            //  ...headerWithoutButton(colorScheme),
           }}
         />
         <Drawer.Screen

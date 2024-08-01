@@ -2,14 +2,15 @@ import { View, Text } from "components/Themed";
 import { StyleSheet } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
-import RenderItems from "components/RenderItems";
+import RenderSubCategories from "components/RenderSubCategories";
 import { Stack } from "expo-router";
 import useFetchSubCategories from "components/useFetchSubCategories2";
 import { useRefetchSubeStore } from "components/refetchSubStore";
 
-export default function RenderCategory() {
+export default function GetSubCategories() {
   const { subCategory } = useLocalSearchParams<{ subCategory: string }>();
-  const { fetchError, subCategories, refetch, isFetchingSub } = useFetchSubCategories();
+  const { fetchError, subCategories, refetch, isFetchingSub } =
+    useFetchSubCategories();
   const { fetchStatus, setRefetch, hasRefetched } = useRefetchSubeStore();
 
   const encodeTable = (title: string) => {
@@ -37,7 +38,7 @@ export default function RenderCategory() {
   return (
     <View style={styles.container}>
       {!subCategory ? (
-        <RenderItems
+        <RenderSubCategories
           items={[]}
           fetchError={fetchError}
           table=''
@@ -46,7 +47,7 @@ export default function RenderCategory() {
       ) : (
         <>
           <Stack.Screen options={{ headerTitle: subCategory }} />
-          <RenderItems
+          <RenderSubCategories
             items={filteredItems}
             fetchError={fetchError}
             table={encodeTable(subCategory)}

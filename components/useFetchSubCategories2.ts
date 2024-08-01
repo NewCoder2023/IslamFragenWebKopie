@@ -48,6 +48,7 @@ export default function useFetchSubCategories() {
     queryKey,
     queryFn: () => fetchSubCategories(tableNames || []),
     enabled: !!tableNames && tableNames.length > 0,
+    staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
   });
 
   const { data: subCategories, isLoading: isFetchingSub, error: fetchError } = fetchSubCategoriesQuery;

@@ -1,16 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
+import { View } from "components/Themed";
 import {
-  KeyboardAvoidingView,
-  Keyboard,
   ScrollView,
   StyleSheet,
   TextInput,
-  View,
   TouchableWithoutFeedback,
   Pressable,
   Modal,
-  Alert,
-  Platform,
 } from "react-native";
 import { Stack, Link } from "expo-router";
 import Colors from "constants/Colors";
@@ -209,7 +205,6 @@ export default function askQuestion() {
 
   return (
     <View style={styles.container}>
-      {/* <CustomToastContainer /> */}
       <Stack.Screen
         options={{
           headerTitle: "Eine Frage stellen",
@@ -223,7 +218,8 @@ export default function askQuestion() {
         }}
       />
       <ScrollView
-        contentContainerStyle={styles.contactContainer}
+        contentContainerStyle={styles.scrollContent}
+        style={styles.scrollStyle}
         ref={scrollViewRef}
         onContentSizeChange={() =>
           scrollViewRef.current.scrollToEnd({ animated: true })
@@ -259,22 +255,20 @@ export default function askQuestion() {
         />
 
         {/* Gender Picker */}
-        <TouchableWithoutFeedback
-          onPress={() => setIsPickerVisibleGender(true)}
-        >
+        <Pressable onPress={() => setIsPickerVisibleGender(true)}>
           <View style={[styles.pickerTrigger, themeStyles.inverseTextInput]}>
             <Text style={[styles.pickerText, themeStyles.inverseQuestionText]}>
               {genderOptions.find((option) => option.value === gender)?.label}
             </Text>
           </View>
-        </TouchableWithoutFeedback>
+        </Pressable>
         <Modal
           visible={isPickerVisibleGender}
           transparent={true}
           animationType='slide'
           onRequestClose={() => setIsPickerVisibleGender(false)}
         >
-          <View style={styles.modalContainer}>
+          <View style={[styles.modalContainer, themeStyles.modalQuestionBlurredBackground]}>
             <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={gender}
@@ -296,20 +290,20 @@ export default function askQuestion() {
         </Modal>
 
         {/* Marja Picker */}
-        <TouchableWithoutFeedback onPress={() => setIsPickerVisibleMarja(true)}>
+        <Pressable onPress={() => setIsPickerVisibleMarja(true)}>
           <View style={[styles.pickerTrigger, themeStyles.inverseTextInput]}>
             <Text style={[styles.pickerText, themeStyles.inverseQuestionText]}>
               {marjaOptions.find((option) => option.value === marja)?.label}
             </Text>
           </View>
-        </TouchableWithoutFeedback>
+        </Pressable>
         <Modal
           visible={isPickerVisibleMarja}
           transparent={true}
           animationType='slide'
           onRequestClose={() => setIsPickerVisibleMarja(false)}
         >
-          <View style={styles.modalContainer}>
+          <View style={[styles.modalContainer, themeStyles.modalQuestionBlurredBackground]}>
             <View
               style={[
                 styles.pickerContainer,
@@ -380,11 +374,9 @@ export default function askQuestion() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    width: "100%",
-    maxWidth: 700,
-    marginHorizontal: "auto",
+    justifyContent: "center",
   },
+
   headerButton: {
     backgroundColor: "transparent",
     marginRight: 20,
@@ -393,10 +385,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: Colors.light.link,
   },
-  contactContainer: {
+  scrollContent: {
     flexGrow: 1,
     justifyContent: "flex-start",
+    flexDirection: "column",
     paddingTop: 20,
+  },
+  scrollStyle: {
+    width: "100%",
+    maxWidth: 700,
+    marginHorizontal: "auto",
   },
   input: {
     marginHorizontal: 10,
