@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginHorizontal: 20,
+   
   },
   loadingIndicatorText: {
     fontSize: 20,

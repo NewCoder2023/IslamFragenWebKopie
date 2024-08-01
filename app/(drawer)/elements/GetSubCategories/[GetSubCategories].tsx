@@ -4,7 +4,7 @@ import React, { useLayoutEffect } from "react";
 import { useLocalSearchParams } from "expo-router";
 import RenderSubCategories from "components/RenderSubCategories";
 import { Stack } from "expo-router";
-import useFetchSubCategories from "components/useFetchSubCategories2";
+import useFetchSubCategories from "components/useFetchSubCategories";
 import { Loading } from "components/Loading";
 
 export default function GetSubCategories() {
@@ -20,7 +20,7 @@ export default function GetSubCategories() {
   };
 
   if (isFetchingSub) {
-    return <Loading message="Kategorien werden geladen!" />;
+    return <Loading message="Fragen werden geladen!" />;
   }
 
   // Determine matched table and filtered items based on subCategory

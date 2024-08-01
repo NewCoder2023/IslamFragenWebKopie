@@ -9,9 +9,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { useColorScheme } from "hooks/useColorScheme.web";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import React from 'react'
+import React from "react";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -60,11 +58,9 @@ const separateWords = (name: string) => {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-  const queryClient = new QueryClient()
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-       <QueryClientProvider client={queryClient}>
       <Stack>
         <Stack.Screen
           name='GetSubCategories/[GetSubCategories]'
@@ -80,7 +76,6 @@ function RootLayoutNav() {
           }}
         />
       </Stack>
-      </QueryClientProvider>
     </ThemeProvider>
   );
 }

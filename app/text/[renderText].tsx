@@ -19,7 +19,7 @@ import SingleAnswer from "components/SingleAnswereRenderText";
 import { copySingleAnswer } from "components/copySingleAnswer";
 import { copyMultipleAnswers } from "components/copyMultipleAnswers";
 import MultipleAnswers from "components/MultipleAnswersRenderText";
-import { useFetchText } from "components/useFetchText2";
+import { useFetchText } from "components/useFetchText";
 import { Loading } from "components/Loading";
 
 export default function RenderText() {
@@ -56,7 +56,7 @@ export default function RenderText() {
   const displaySingleAnswer = item?.answer;
   const colorScheme = useColorScheme();
   const themeStyles = coustomTheme();
-  const { initialFetchDone, initializeSettings } = useInitializeSettings(
+  const { initializeSettings } = useInitializeSettings(
     setFontSize,
     setLineHeight
   );
@@ -135,7 +135,7 @@ export default function RenderText() {
         }}
       />
       {isFetching ? (
-        <Loading message="Text wird geladen!"/>
+        <Loading message='Text wird geladen!' />
       ) : fetchError ? (
         <View style={styles.renderError}>
           <Text style={styles.errorText}>{fetchError}</Text>

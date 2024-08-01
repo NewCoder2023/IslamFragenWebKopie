@@ -19,9 +19,10 @@ export const useFetchCategories = () => {
   const queryClient = useQueryClient();
 
   const query = useQuery({
+  
     queryKey: ["tableNames"],
     queryFn: fetchTableNames,
-    staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+    staleTime: 1000 * 60 * 10, // Cache data for 5 minutes
     gcTime: 1000 * 60 * 10, // Keep data in cache for 10 minuten
   });
 
@@ -73,5 +74,6 @@ export const useFetchCategories = () => {
     isFetchingCat: query.isLoading,
     isFetching: query.isFetching,
     refetch: query.refetch,
+    status:query.status
   };
 };

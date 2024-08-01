@@ -12,13 +12,12 @@ import useInitializeSettings from "components/useInitializeSettings";
 export default function index() {
   const themeStyles = coustomTheme();
   const { fontSize, setLineHeight, setFontSize } = useSetFontSize();
-  const { initialFetchDone, initializeSettings } = useInitializeSettings(
+  const { initializeSettings } = useInitializeSettings(
     setFontSize,
     setLineHeight
   );
 
   useLayoutEffect(() => {
-    initialFetchDone();
     initializeSettings();
   }, []);
 
